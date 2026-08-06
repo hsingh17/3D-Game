@@ -68,6 +68,12 @@
     },
     "dotnet.defaultSolution": "3D-Game.slnx",
     "[csharp]": {
-        "editor.defaultFormatter": "ms-dotnettools.csharp"
+        "editor.defaultFormatter": "csharpier.csharpier-vscode"
     },
+    "dotnetAcquisitionExtension.existingDotnetPath": [
+        {
+            "extensionId": "ms-dotnettools.csharp",
+            "path": "C:\\Program Files\\dotnet\\dotnet.exe"
+        }
+    ],
 }

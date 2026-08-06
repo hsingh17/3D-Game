@@ -1,46 +1,60 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private EntityScriptableObject scriptableObject;
 
+    [SerializeField]
+    private MouseSensitivity mouseSensitivity;
+
+    private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction jumpAction;
-
-    private Vector2 move;
-    private float jump;
+    private InputAction lookAction;
+    private Vector3 move;
+    private Vector2 look;
 
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
+        rb = GetComponent<Rigidbody>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
-
+        lookAction = playerInput.actions["Look"];
     }
 
     private void Update()
     {
-        move = moveAction.ReadValue<Vector2>();
-        jump = jumpAction.ReadValue<float>();
+        Vector2 movement = moveAction.ReadValue<Vector2>();
+        float jump = jumpAction.ReadValue<float>();
+        move = new(movement.x, jump, movement.y);
+        look = lookAction.ReadValue<Vector2>();
     }
 
     private void FixedUpdate()
     {
         Move();
-        Jump();
+        Look();
     }
-
 
     private void Move()
     {
-        Debug.Log(move);
+        Vector3 delta = scriptableObject.moveSpeed * Time.deltaTime * move;
+        rb.MovePosition(transform.position + delta);
     }
 
-    private void Jump()
+    private void Look()
     {
-        Debug.Log(jump);
+        transform.rotation = Quaternion.Euler(
+            transform.rotation.x + (look.x * mouseSensitivity.x),
+            transform.rotation.y + (look.y * mouseSensitivity.y),
+            0
+        );
     }
 }
