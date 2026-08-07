@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
@@ -10,7 +11,16 @@ public class PlayerController : MonoBehaviour
     private EntityScriptableObject scriptableObject;
 
     [SerializeField]
+    private Camera camera;
+
+    [SerializeField]
     private MouseSensitivity mouseSensitivity;
+
+    [SerializeField]
+    private float pitchMin;
+
+    [SerializeField]
+    private float pitchMax;
 
     private Rigidbody rb;
     private PlayerInput playerInput;
@@ -19,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private InputAction lookAction;
     private Vector3 move;
     private Vector2 look;
+    private float pitch;
 
     private void Awake()
     {
@@ -39,22 +50,41 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
         Look();
+        Move();
     }
 
     private void Move()
     {
-        Vector3 delta = scriptableObject.moveSpeed * Time.deltaTime * move;
+        Debug.Log(move.y);
+        Vector3 delta = transform.rotation * (scriptableObject.moveSpeed * Time.deltaTime * move);
         rb.MovePosition(transform.position + delta);
     }
 
     private void Look()
     {
+        RotatePlayer();
+        RotateCamera();
+    }
+
+    private void RotatePlayer()
+    {
+        Vector3 curRotationEulerAngles = transform.rotation.eulerAngles;
         transform.rotation = Quaternion.Euler(
-            transform.rotation.x + (look.x * mouseSensitivity.x),
-            transform.rotation.y + (look.y * mouseSensitivity.y),
-            0
+            curRotationEulerAngles.x,
+            curRotationEulerAngles.y + (look.x * mouseSensitivity.x),
+            curRotationEulerAngles.z
+        );
+    }
+
+    private void RotateCamera()
+    {
+        Vector3 curRotationEulerAngles = camera.transform.rotation.eulerAngles;
+        pitch = Mathf.Clamp(pitch + (-look.y * mouseSensitivity.y), pitchMin, pitchMax);
+        camera.transform.rotation = Quaternion.Euler(
+            pitch,
+            curRotationEulerAngles.y,
+            curRotationEulerAngles.z
         );
     }
 }
