@@ -9143,7 +9143,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -9266,6 +9266,7 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 8
+  jumpCooldownSeconds: 0.5
   groundCheckPadding: 0.2
 --- !u!114 &1037677446
 MonoBehaviour:

@@ -7,5 +7,5 @@ public class EntityScriptableObject : ScriptableObject
     public float moveSpeed;
     public float groundDrag;
     public float airDrag;
-    public float gravityMultiplier;
+    public float gravityMultiplier = 1;
 }

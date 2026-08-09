@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d96c73a32d59e14ca159dcccff0d5e0, type: 3}
   m_Name: PlayerScriptableObject
   m_EditorClassIdentifier: Assembly-CSharp::EntityScriptableObject
-  jumpForce: 10
+  jumpForce: 20
   moveSpeed: 1
-  groundDrag: 6
-  airDrag: 3.5
-  gravity: -9.8
+  groundDrag: 7
+  airDrag: 6
+  gravityMultiplier: 7

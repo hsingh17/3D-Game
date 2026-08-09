@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -27,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private LayerMask ground;
 
     [SerializeField]
-    private float jumpCooldown;
+    private float jumpCooldownSeconds;
 
     [SerializeField]
     private float groundCheckPadding;
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour
     private float jump;
     private float pitch;
     private bool isGrounded = true;
-    private bool canJump = true;
+    private bool jumpOffCd = true;
 
     private void Awake()
     {
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
+        rb.useGravity = false;
     }
 
     private void Update()
@@ -92,8 +94,19 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        // TODO: Add counterracting force that uses gravityMultiplier when not grounded
-        rb.AddForce(scriptableObject.jumpForce * jump * Vector3.up, ForceMode.Impulse);
+        if (isGrounded && jumpOffCd && jump > 0)
+        {
+            rb.AddForce(scriptableObject.jumpForce * jump * Vector3.up, ForceMode.VelocityChange);
+            jumpOffCd = false;
+            StartCoroutine(JumpCooldown());
+        }
+        else if (!isGrounded)
+        {
+            rb.AddForce(
+                Physics.gravity * scriptableObject.gravityMultiplier,
+                ForceMode.Acceleration
+            );
+        }
     }
 
     private void Look()
@@ -121,5 +134,12 @@ public class PlayerController : MonoBehaviour
             curRotationEulerAngles.y,
             curRotationEulerAngles.z
         );
+    }
+
+    private IEnumerator JumpCooldown()
+    {
+        yield return new WaitForSeconds(jumpCooldownSeconds);
+        Debug.Log("Jump off CD");
+        jumpOffCd = true;
     }
 }
