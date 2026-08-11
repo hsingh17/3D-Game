@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -39,9 +40,11 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction lookAction;
+    private InputAction sprintAction;
     private Vector3 move;
     private Vector2 look;
     private float jump;
+    private float sprint;
     private float pitch;
     private bool isGrounded = true;
     private bool jumpOffCd = true;
@@ -54,15 +57,13 @@ public class PlayerController : MonoBehaviour
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
+        sprintAction = playerInput.actions["Sprint"];
         rb.useGravity = false;
     }
 
     private void Update()
     {
-        Vector2 movement = moveAction.ReadValue<Vector2>();
-        jump = isGrounded ? jumpAction.ReadValue<float>() : 0;
-        move = new(movement.x, 0, movement.y);
-        look = lookAction.ReadValue<Vector2>();
+        ReadActionInputs();
     }
 
     private void FixedUpdate()
@@ -87,7 +88,9 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector3 delta = transform.rotation * (scriptableObject.moveSpeed * move);
+        float speed =
+            scriptableObject.moveSpeed * (sprint > 0 ? scriptableObject.sprintMultiplier : 1);
+        Vector3 delta = transform.rotation * (speed * move);
         rb.AddForce(delta, ForceMode.VelocityChange);
         rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
     }
@@ -141,5 +144,14 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(jumpCooldownSeconds);
         Debug.Log("Jump off CD");
         jumpOffCd = true;
+    }
+
+    private void ReadActionInputs()
+    {
+        Vector2 movement = moveAction.ReadValue<Vector2>();
+        jump = isGrounded ? jumpAction.ReadValue<float>() : 0;
+        move = new(movement.x, 0, movement.y);
+        look = lookAction.ReadValue<Vector2>();
+        sprint = sprintAction.ReadValue<float>();
     }
 }

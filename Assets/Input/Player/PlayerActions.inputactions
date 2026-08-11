@@ -35,6 +35,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "Sprint",
+                    "type": "Value",
+                    "id": "cfaa4fc3-6a6b-4d62-851f-845eece92c53",
+                    "expectedControlType": "Integer",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -112,6 +122,17 @@
                     "processors": "",
                     "groups": "KMB",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3f295c9-44d7-49ee-9889-0b8e0e9eb1a1",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KMB",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

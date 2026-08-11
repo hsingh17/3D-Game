@@ -17,3 +17,4 @@ MonoBehaviour:
   groundDrag: 7
   airDrag: 6
   gravityMultiplier: 7
+  sprintMultiplier: 2
