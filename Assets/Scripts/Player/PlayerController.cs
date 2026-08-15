@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
@@ -88,9 +86,17 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        float speed =
-            scriptableObject.moveSpeed * (sprint > 0 ? scriptableObject.sprintMultiplier : 1);
-        Vector3 delta = transform.rotation * (speed * move);
+        Vector3 forwardAbsolute = new(
+            Mathf.Abs(transform.forward.x),
+            Mathf.Abs(transform.forward.y),
+            Mathf.Abs(transform.forward.z)
+        );
+        Vector3 delta = transform.rotation * (scriptableObject.moveSpeed * move);
+        Vector3 sprintVector =
+            sprint > 0 ? scriptableObject.sprintMultiplier * forwardAbsolute : Vector3.zero;
+        sprintVector += new Vector3(1, 0, 1);
+        delta = Vector3.Scale(delta, sprintVector);
+
         rb.AddForce(delta, ForceMode.VelocityChange);
         rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
     }
@@ -142,7 +148,6 @@ public class PlayerController : MonoBehaviour
     private IEnumerator JumpCooldown()
     {
         yield return new WaitForSeconds(jumpCooldownSeconds);
-        Debug.Log("Jump off CD");
         jumpOffCd = true;
     }
 
