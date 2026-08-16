@@ -86,17 +86,16 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector3 forwardAbsolute = new(
-            Mathf.Abs(transform.forward.x),
-            Mathf.Abs(transform.forward.y),
-            Mathf.Abs(transform.forward.z)
-        );
-        Vector3 delta = transform.rotation * (scriptableObject.moveSpeed * move);
-        Vector3 sprintVector =
-            sprint > 0 ? scriptableObject.sprintMultiplier * forwardAbsolute : Vector3.zero;
-        sprintVector += new Vector3(1, 0, 1);
-        delta = Vector3.Scale(delta, sprintVector);
+        Vector3 delta = scriptableObject.moveSpeed * move;
 
+        // Apply sprinting if necessary
+        if (sprint > 0 && move.z > 0)
+        {
+            delta.z *= scriptableObject.sprintMultiplier;
+        }
+
+        // Rotate our movement delta vector to align with the "forward" direction of the player
+        delta = transform.rotation * delta;
         rb.AddForce(delta, ForceMode.VelocityChange);
         rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
     }
