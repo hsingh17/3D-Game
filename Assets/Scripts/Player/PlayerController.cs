@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
@@ -32,6 +34,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float groundCheckPadding;
 
+    [SerializeField]
+    private float stepCheckPadding;
+
+    [SerializeField]
+    private float maxStepHeight;
+
+    [SerializeField]
+    private float stepCheckDistance;
+
     private CapsuleCollider collider;
     private Rigidbody rb;
     private PlayerInput playerInput;
@@ -44,6 +55,7 @@ public class PlayerController : MonoBehaviour
     private float jump;
     private float sprint;
     private float pitch;
+    private bool hitStep = false;
     private bool isGrounded = true;
     private bool jumpOffCd = true;
 
@@ -67,6 +79,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGrounded();
+        CheckSteps();
         Look();
         Move();
         Jump();
@@ -82,6 +95,21 @@ public class PlayerController : MonoBehaviour
             (collider.height / 2) - collider.radius + groundCheckPadding,
             ground.value
         );
+    }
+
+    private void CheckSteps()
+    {
+        float distToFeet = collider.height / 2 + stepCheckPadding;
+        Vector3 playerFeet = transform.position + (distToFeet * Vector3.down);
+        Ray bottomRay = new(playerFeet, transform.forward);
+        Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), transform.forward);
+
+        Debug.DrawRay(bottomRay.origin, bottomRay.direction, Color.red);
+        Debug.DrawRay(topRay.origin, topRay.direction, Color.green);
+
+        bool bottomHit = Physics.Raycast(bottomRay, stepCheckDistance, ground.value);
+        bool topHit = Physics.Raycast(topRay, stepCheckDistance, ground.value);
+        Debug.Log($"T: {topHit} | B: {bottomHit}");
     }
 
     private void Move()
