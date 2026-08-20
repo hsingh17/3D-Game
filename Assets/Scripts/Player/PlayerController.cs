@@ -10,6 +10,18 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(CapsuleCollider))]
 public class PlayerController : MonoBehaviour
 {
+    public struct HitCheck
+    {
+        public bool DidHit { get; set; }
+        public RaycastHit Hit { get; set; }
+
+        public HitCheck(bool didHit, RaycastHit hit)
+        {
+            DidHit = didHit;
+            Hit = hit;
+        }
+    }
+
     [SerializeField]
     private EntityScriptableObject scriptableObject;
 
@@ -55,7 +67,6 @@ public class PlayerController : MonoBehaviour
     private float jump;
     private float sprint;
     private float pitch;
-    private bool hitStep = false;
     private bool isGrounded = true;
     private bool jumpOffCd = true;
 
@@ -79,7 +90,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGrounded();
-        CheckSteps();
+        MoveUpStep();
         Look();
         Move();
         Jump();
@@ -88,7 +99,7 @@ public class PlayerController : MonoBehaviour
     private void CheckGrounded()
     {
         isGrounded = Physics.SphereCast(
-            transform.position,
+            rb.position,
             collider.radius,
             Vector3.down,
             out _,
@@ -97,19 +108,21 @@ public class PlayerController : MonoBehaviour
         );
     }
 
-    private void CheckSteps()
+    private void MoveUpStep()
     {
-        float distToFeet = collider.height / 2 + stepCheckPadding;
-        Vector3 playerFeet = transform.position + (distToFeet * Vector3.down);
-        Ray bottomRay = new(playerFeet, transform.forward);
-        Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), transform.forward);
+        var (bottomHit, topHit) = CheckSteps();
+        bool doMoveUpStep = bottomHit.DidHit && !topHit.DidHit && move.z > 0;
+        if (!doMoveUpStep)
+        {
+            return;
+        }
 
-        Debug.DrawRay(bottomRay.origin, bottomRay.direction, Color.red);
-        Debug.DrawRay(topRay.origin, topRay.direction, Color.green);
+        Debug.Log("moving up step!");
+        Bounds bounds = bottomHit.Hit.collider.bounds;
+        Vector3 stepTop = bounds.center;
+        stepTop.y += bounds.extents.y;
 
-        bool bottomHit = Physics.Raycast(bottomRay, stepCheckDistance, ground.value);
-        bool topHit = Physics.Raycast(topRay, stepCheckDistance, ground.value);
-        Debug.Log($"T: {topHit} | B: {bottomHit}");
+        rb.MovePosition(stepTop);
     }
 
     private void Move()
@@ -123,7 +136,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Rotate our movement delta vector to align with the "forward" direction of the player
-        delta = transform.rotation * delta;
+        delta = rb.rotation * delta;
         rb.AddForce(delta, ForceMode.VelocityChange);
         rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
     }
@@ -153,8 +166,8 @@ public class PlayerController : MonoBehaviour
 
     private void RotatePlayer()
     {
-        Vector3 curRotationEulerAngles = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(
+        Vector3 curRotationEulerAngles = rb.rotation.eulerAngles;
+        rb.rotation = Quaternion.Euler(
             curRotationEulerAngles.x,
             curRotationEulerAngles.y + (look.x * mouseSensitivity.x),
             curRotationEulerAngles.z
@@ -185,5 +198,29 @@ public class PlayerController : MonoBehaviour
         move = new(movement.x, 0, movement.y);
         look = lookAction.ReadValue<Vector2>();
         sprint = sprintAction.ReadValue<float>();
+    }
+
+    private (HitCheck bottomHit, HitCheck topHit) CheckSteps()
+    {
+        float distToFeet = collider.height / 2 + stepCheckPadding;
+        Vector3 playerFeet = rb.position + (distToFeet * Vector3.down);
+        Ray bottomRay = new(playerFeet, transform.forward);
+        Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), transform.forward);
+
+        bool didBottomHit = Physics.Raycast(
+            bottomRay,
+            out RaycastHit bottomHit,
+            stepCheckDistance,
+            ground.value
+        );
+
+        bool didTopHit = Physics.Raycast(
+            topRay,
+            out RaycastHit topHit,
+            stepCheckDistance,
+            ground.value
+        );
+
+        return (new(didBottomHit, bottomHit), new(didTopHit, topHit));
     }
 }
