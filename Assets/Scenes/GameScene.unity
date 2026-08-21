@@ -10821,9 +10821,10 @@ MonoBehaviour:
     m_Bits: 8
   jumpCooldownSeconds: 0.5
   groundCheckPadding: 0.2
-  stepCheckPadding: 0
-  maxStepHeight: 0.75
-  stepCheckDistance: 1.3
+  stepCheckPadding: -0.2
+  maxStepHeight: 0.35
+  stepCheckDistance: 0.55
+  stepSmoothing: 0.25
 --- !u!114 &1037677446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11204,8 +11205,8 @@ Transform:
   m_GameObject: {fileID: 1056298104}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8.533779, y: 0.2870245, z: 7.8209724}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -3.67, y: 0.23, z: 2.626}
+  m_LocalScale: {x: 1, y: 0.69860923, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1661171532}

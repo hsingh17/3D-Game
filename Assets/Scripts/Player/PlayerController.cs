@@ -55,6 +55,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float stepCheckDistance;
 
+    [SerializeField]
+    private float stepSmoothing;
+
     private CapsuleCollider collider;
     private Rigidbody rb;
     private PlayerInput playerInput;
@@ -112,17 +115,10 @@ public class PlayerController : MonoBehaviour
     {
         var (bottomHit, topHit) = CheckSteps();
         bool doMoveUpStep = bottomHit.DidHit && !topHit.DidHit && move.z > 0;
-        if (!doMoveUpStep)
+        if (doMoveUpStep)
         {
-            return;
+            rb.MovePosition(rb.position + new Vector3(0, stepSmoothing, 0));
         }
-
-        Debug.Log("moving up step!");
-        Bounds bounds = bottomHit.Hit.collider.bounds;
-        Vector3 stepTop = bounds.center;
-        stepTop.y += bounds.extents.y;
-
-        rb.MovePosition(stepTop);
     }
 
     private void Move()
@@ -130,7 +126,7 @@ public class PlayerController : MonoBehaviour
         Vector3 delta = scriptableObject.moveSpeed * move;
 
         // Apply sprinting if necessary
-        if (sprint > 0 && move.z > 0)
+        if (sprint > 0 && move.z > 0 && isGrounded)
         {
             delta.z *= scriptableObject.sprintMultiplier;
         }
@@ -206,7 +202,8 @@ public class PlayerController : MonoBehaviour
         Vector3 playerFeet = rb.position + (distToFeet * Vector3.down);
         Ray bottomRay = new(playerFeet, transform.forward);
         Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), transform.forward);
-
+        Debug.DrawRay(bottomRay.origin, bottomRay.direction);
+        Debug.DrawRay(topRay.origin, topRay.direction);
         bool didBottomHit = Physics.Raycast(
             bottomRay,
             out RaycastHit bottomHit,
