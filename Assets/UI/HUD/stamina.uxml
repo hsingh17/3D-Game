@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/HUD/hud.uss?fileID=7433441132597879392&amp;guid=6c0cc90483a381449a19936b6f5e0ea1&amp;type=3#hud"/>
+    <ui:VisualElement name="hud" class="hud" style="flex-grow: 1;">
+        <ui:VisualElement name="hp-stamina" class="hp-stamina-container">
+            <ui:ProgressBar value="100" title="" enabled="true" picking-mode="Position" name="hp" class="hp"/>
+            <ui:ProgressBar value="100" title="" enabled="true" picking-mode="Position" name="stamina" class="stamina"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

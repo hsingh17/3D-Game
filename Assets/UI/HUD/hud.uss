@@ -1,0 +1,33 @@
+.hud {
+    width: 100%;
+    height: 100%;
+}
+
+.hp-stamina-container {
+    display: flex;
+    align-items: flex-start;
+    height: auto;
+
+}
+
+.hp-stamina-container .unity-progress-bar__background {
+    border-width: 0;
+    border-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 255);
+}
+
+.hp .unity-progress-bar__progress {
+    background-color: rgb(255, 0, 0);
+}
+
+.stamina .unity-progress-bar__progress {
+    background-color: rgb(16, 254, 47);
+}
+
+.hp {
+    width: 300px;
+}
+
+.stamina {
+    width: 150px;
+}
