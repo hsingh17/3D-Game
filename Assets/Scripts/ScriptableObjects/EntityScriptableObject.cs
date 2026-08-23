@@ -9,4 +9,6 @@ public class EntityScriptableObject : ScriptableObject
     public float airDrag;
     public float gravityMultiplier = 1;
     public float sprintMultiplier = 1;
+    public float maxStaminaSec = 5;
+    public float staminaRegen = 1;
 }

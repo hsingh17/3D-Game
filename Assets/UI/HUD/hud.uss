@@ -7,13 +7,29 @@
     display: flex;
     align-items: flex-start;
     height: auto;
+}
 
+.hp-stamina-container>* {
+    background-color: white;
+    border-width: 2px;
+    border-color: rgb(0, 0, 0);
+    padding: 0;
+    height: 70%;
+}
+
+.hp-stamina-container .unity-progress-bar__container {
+    max-height: none;
+    min-height: 0;
+    height: 100%;
+}
+
+.hp-stamina-container .unity-progress-bar__progress {
+    margin: 2px;
 }
 
 .hp-stamina-container .unity-progress-bar__background {
     border-width: 0;
-    border-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 255);
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .hp .unity-progress-bar__progress {
@@ -25,9 +41,9 @@
 }
 
 .hp {
-    width: 300px;
+    width: 600px;
 }
 
 .stamina {
-    width: 150px;
+    width: 300px;
 }

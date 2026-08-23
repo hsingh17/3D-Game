@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
-using UnityEditor.XR;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
@@ -60,7 +57,6 @@ public class PlayerController : MonoBehaviour
 
     private CapsuleCollider collider;
     private Rigidbody rb;
-    private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction lookAction;
@@ -75,13 +71,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        PlayerInput playerInput = GetComponent<PlayerInput>();
         collider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
-        sprintAction = playerInput.actions["Sprint"];
         rb.useGravity = false;
     }
 
@@ -193,7 +188,6 @@ public class PlayerController : MonoBehaviour
         jump = isGrounded ? jumpAction.ReadValue<float>() : 0;
         move = new(movement.x, 0, movement.y);
         look = lookAction.ReadValue<Vector2>();
-        sprint = sprintAction.ReadValue<float>();
     }
 
     private (HitCheck bottomHit, HitCheck topHit) CheckSteps()
