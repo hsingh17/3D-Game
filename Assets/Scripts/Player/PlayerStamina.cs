@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,23 +9,36 @@ public class PlayerStamina : MonoBehaviour
     private EntityScriptableObject scriptableObject;
 
     [SerializeField]
-    private PlayerInput playerInput;
-
-    [SerializeField]
     private HudStaminaController hudStaminaController;
 
-    private InputAction sprintAction;
-
-    public bool CanSprint { get; set; }
+    public float MaxStamina { get; set; }
+    public float CurrentStamina { get; set; }
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
-        sprintAction = playerInput.actions["Sprint"];
+        CurrentStamina = scriptableObject.maxStamina;
+        MaxStamina = scriptableObject.maxStamina;
     }
 
-    private void Update()
+    public void UseStamina(float consumedStamina)
     {
-        float sprint = sprintAction.ReadValue<float>();
+        if (CurrentStamina > 0)
+        {
+            CurrentStamina = Mathf.Clamp(CurrentStamina - consumedStamina, 0, MaxStamina);
+            hudStaminaController.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
+            Debug.Log(CurrentStamina);
+        }
+    }
+
+    public void RegenStamina()
+    {
+        if (CurrentStamina < MaxStamina)
+        {
+            CurrentStamina = Mathf.Clamp(
+                CurrentStamina + scriptableObject.staminaRegenPerSec * Time.deltaTime,
+                0,
+                MaxStamina
+            );
+        }
     }
 }

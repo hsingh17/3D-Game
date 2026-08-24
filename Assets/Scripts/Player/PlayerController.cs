@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(PlayerStamina))]
 public class PlayerController : MonoBehaviour
 {
     public struct HitCheck
@@ -55,6 +56,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float stepSmoothing;
 
+    private PlayerStamina playerStamina;
     private CapsuleCollider collider;
     private Rigidbody rb;
     private InputAction moveAction;
@@ -63,8 +65,8 @@ public class PlayerController : MonoBehaviour
     private InputAction sprintAction;
     private Vector3 move;
     private Vector2 look;
-    private float jump;
     private float sprint;
+    private float jump;
     private float pitch;
     private bool isGrounded = true;
     private bool jumpOffCd = true;
@@ -74,15 +76,18 @@ public class PlayerController : MonoBehaviour
         PlayerInput playerInput = GetComponent<PlayerInput>();
         collider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
+        playerStamina = GetComponent<PlayerStamina>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
+        sprintAction = playerInput.actions["Sprint"];
         rb.useGravity = false;
     }
 
     private void Update()
     {
         ReadActionInputs();
+        UpdateStamina();
     }
 
     private void FixedUpdate()
@@ -121,7 +126,7 @@ public class PlayerController : MonoBehaviour
         Vector3 delta = scriptableObject.moveSpeed * move;
 
         // Apply sprinting if necessary
-        if (sprint > 0 && move.z > 0 && isGrounded)
+        if (CanSprint())
         {
             delta.z *= scriptableObject.sprintMultiplier;
         }
@@ -188,6 +193,7 @@ public class PlayerController : MonoBehaviour
         jump = isGrounded ? jumpAction.ReadValue<float>() : 0;
         move = new(movement.x, 0, movement.y);
         look = lookAction.ReadValue<Vector2>();
+        sprint = sprintAction.ReadValue<float>();
     }
 
     private (HitCheck bottomHit, HitCheck topHit) CheckSteps()
@@ -196,8 +202,7 @@ public class PlayerController : MonoBehaviour
         Vector3 playerFeet = rb.position + (distToFeet * Vector3.down);
         Ray bottomRay = new(playerFeet, transform.forward);
         Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), transform.forward);
-        Debug.DrawRay(bottomRay.origin, bottomRay.direction);
-        Debug.DrawRay(topRay.origin, topRay.direction);
+
         bool didBottomHit = Physics.Raycast(
             bottomRay,
             out RaycastHit bottomHit,
@@ -213,5 +218,20 @@ public class PlayerController : MonoBehaviour
         );
 
         return (new(didBottomHit, bottomHit), new(didTopHit, topHit));
+    }
+
+    private bool CanSprint() =>
+        sprint > 0 && move.z > 0 && isGrounded && playerStamina.CurrentStamina > 0;
+
+    private void UpdateStamina()
+    {
+        if (CanSprint())
+        {
+            playerStamina.UseStamina(scriptableObject.sprintStaminaUsagePerSec * Time.deltaTime);
+        }
+        else
+        {
+            playerStamina.RegenStamina();
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.MPE;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -6,6 +7,8 @@ using UnityEngine.UIElements;
 public class HudStaminaController : MonoBehaviour
 {
     private ProgressBar progressBar;
+
+    private float maxValue;
 
     private void OnEnable() => GetComponent<PanelRenderer>().RegisterUIReloadCallback(OnUIReload);
 
@@ -17,5 +20,8 @@ public class HudStaminaController : MonoBehaviour
         progressBar = root.Q<ProgressBar>("stamina");
     }
 
-    public void UpdateStaminaValue(float value) => progressBar.value = value;
+    public void UpdateStaminaValueByProportion(float proportion)
+    {
+        progressBar.value = progressBar.highValue * proportion;
+    }
 }

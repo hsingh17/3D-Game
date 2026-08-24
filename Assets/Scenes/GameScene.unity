@@ -10257,6 +10257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723189562}
   - component: {fileID: 723189561}
+  - component: {fileID: 723189563}
   m_Layer: 5
   m_Name: HudPanelRenderer
   m_TagString: Untagged
@@ -10337,6 +10338,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &723189563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723189560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ccab18e96878e44aaa153d451daff70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HudStaminaController
 --- !u!43 &803534391
 Mesh:
   m_ObjectHideFlags: 0
@@ -10757,6 +10770,7 @@ GameObject:
   - component: {fileID: 1037677440}
   - component: {fileID: 1037677446}
   - component: {fileID: 1037677445}
+  - component: {fileID: 1037677447}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -10945,6 +10959,20 @@ MonoBehaviour:
   m_DefaultActionMap: Default
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1037677447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037677439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d27142199cd304499d014221e3ec42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStamina
+  scriptableObject: {fileID: 11400000, guid: ed977b650e6995649b2f19a98231abba, type: 2}
+  hudStaminaController: {fileID: 723189563}
 --- !u!1 &1056298104
 GameObject:
   m_ObjectHideFlags: 0
