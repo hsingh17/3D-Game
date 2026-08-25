@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +10,12 @@ public class PlayerStamina : MonoBehaviour
     [SerializeField]
     private HudStaminaController hudStaminaController;
 
+    [SerializeField]
+    private float regenWaitTimeSeconds;
+
+    private float timeSinceLastStaminaConsumingAction;
+    private bool blockStaminaUsage;
+
     public float MaxStamina { get; set; }
     public float CurrentStamina { get; set; }
 
@@ -18,27 +23,51 @@ public class PlayerStamina : MonoBehaviour
     {
         CurrentStamina = scriptableObject.maxStamina;
         MaxStamina = scriptableObject.maxStamina;
+        timeSinceLastStaminaConsumingAction = 0;
+        blockStaminaUsage = false;
+    }
+
+    private void Update()
+    {
+        RegenStamina();
     }
 
     public void UseStamina(float consumedStamina)
     {
-        if (CurrentStamina > 0)
+        if (CurrentStamina > 0 && !blockStaminaUsage)
         {
             CurrentStamina = Mathf.Clamp(CurrentStamina - consumedStamina, 0, MaxStamina);
+            timeSinceLastStaminaConsumingAction = 0;
+            blockStaminaUsage = CurrentStamina == 0;
             hudStaminaController.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
-            Debug.Log(CurrentStamina);
         }
     }
 
-    public void RegenStamina()
+    private void RegenStamina()
     {
-        if (CurrentStamina < MaxStamina)
+        timeSinceLastStaminaConsumingAction = Mathf.Clamp(
+            timeSinceLastStaminaConsumingAction + Time.deltaTime,
+            0,
+            regenWaitTimeSeconds
+        );
+
+        if (
+            CurrentStamina < MaxStamina
+            && timeSinceLastStaminaConsumingAction >= regenWaitTimeSeconds
+        )
         {
             CurrentStamina = Mathf.Clamp(
                 CurrentStamina + scriptableObject.staminaRegenPerSec * Time.deltaTime,
                 0,
                 MaxStamina
             );
+
+            if (CurrentStamina == MaxStamina && blockStaminaUsage)
+            {
+                blockStaminaUsage = false;
+            }
+
+            hudStaminaController.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
         }
     }
 }

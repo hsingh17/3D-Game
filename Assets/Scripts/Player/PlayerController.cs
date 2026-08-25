@@ -229,9 +229,5 @@ public class PlayerController : MonoBehaviour
         {
             playerStamina.UseStamina(scriptableObject.sprintStaminaUsagePerSec * Time.deltaTime);
         }
-        else
-        {
-            playerStamina.RegenStamina();
-        }
     }
 }

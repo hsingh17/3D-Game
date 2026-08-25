@@ -10973,6 +10973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStamina
   scriptableObject: {fileID: 11400000, guid: ed977b650e6995649b2f19a98231abba, type: 2}
   hudStaminaController: {fileID: 723189563}
+  regenWaitTimeSeconds: 0.5
 --- !u!1 &1056298104
 GameObject:
   m_ObjectHideFlags: 0
