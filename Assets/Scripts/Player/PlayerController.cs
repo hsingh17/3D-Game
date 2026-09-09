@@ -221,7 +221,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool CanSprint() =>
-        sprint > 0 && move.z > 0 && isGrounded && playerStamina.CurrentStamina > 0;
+        sprint > 0 && move.z > 0 && isGrounded && playerStamina.CanUseStamina();
 
     private void UpdateStamina()
     {

@@ -19,6 +19,20 @@ public class PlayerStamina : MonoBehaviour
     public float MaxStamina { get; set; }
     public float CurrentStamina { get; set; }
 
+    public void UseStamina(float consumedStamina)
+    {
+        Debug.Log(blockStaminaUsage);
+        if (CurrentStamina > 0 && !blockStaminaUsage)
+        {
+            CurrentStamina = Mathf.Clamp(CurrentStamina - consumedStamina, 0, MaxStamina);
+            timeSinceLastStaminaConsumingAction = 0;
+            blockStaminaUsage = CurrentStamina == 0;
+            hudStaminaController.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
+        }
+    }
+
+    public bool CanUseStamina() => !blockStaminaUsage && CurrentStamina > 0;
+
     private void Awake()
     {
         CurrentStamina = scriptableObject.maxStamina;
@@ -30,17 +44,6 @@ public class PlayerStamina : MonoBehaviour
     private void Update()
     {
         RegenStamina();
-    }
-
-    public void UseStamina(float consumedStamina)
-    {
-        if (CurrentStamina > 0 && !blockStaminaUsage)
-        {
-            CurrentStamina = Mathf.Clamp(CurrentStamina - consumedStamina, 0, MaxStamina);
-            timeSinceLastStaminaConsumingAction = 0;
-            blockStaminaUsage = CurrentStamina == 0;
-            hudStaminaController.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
-        }
     }
 
     private void RegenStamina()

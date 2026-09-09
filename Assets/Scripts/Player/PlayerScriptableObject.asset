@@ -18,6 +18,6 @@ MonoBehaviour:
   airDrag: 6
   gravityMultiplier: 7
   sprintMultiplier: 2
-  sprintStaminaUsagePerSec: 100
+  sprintStaminaUsagePerSec: 50
   maxStamina: 100
   staminaRegenPerSec: 20
