@@ -21,7 +21,6 @@ public class PlayerStamina : MonoBehaviour
 
     public void UseStamina(float consumedStamina)
     {
-        Debug.Log(blockStaminaUsage);
         if (CurrentStamina > 0 && !blockStaminaUsage)
         {
             CurrentStamina = Mathf.Clamp(CurrentStamina - consumedStamina, 0, MaxStamina);
