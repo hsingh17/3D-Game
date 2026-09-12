@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float stepSmoothing;
 
+    private PlayerAnimator playerAnimator;
     private PlayerStamina playerStamina;
     private CapsuleCollider collider;
     private Rigidbody rb;
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour
         collider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         playerStamina = GetComponent<PlayerStamina>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
@@ -88,12 +90,12 @@ public class PlayerController : MonoBehaviour
     {
         ReadActionInputs();
         UpdateStamina();
+        UpdatePlayerState();
     }
 
     private void FixedUpdate()
     {
         CheckGrounded();
-        MoveUpStep();
         Look();
         Move();
         Jump();
@@ -111,30 +113,27 @@ public class PlayerController : MonoBehaviour
         );
     }
 
-    private void MoveUpStep()
+    private void Move()
     {
         var (bottomHit, topHit) = CheckSteps();
         bool doMoveUpStep = bottomHit.DidHit && !topHit.DidHit && move.z > 0;
+
         if (doMoveUpStep)
         {
             rb.MovePosition(rb.position + new Vector3(0, stepSmoothing, 0));
         }
-    }
-
-    private void Move()
-    {
-        Vector3 delta = scriptableObject.moveSpeed * move;
-
-        // Apply sprinting if necessary
-        if (CanSprint())
+        else
         {
-            delta.z *= scriptableObject.sprintMultiplier;
-        }
+            Vector3 delta = scriptableObject.moveSpeed * move;
 
-        // Rotate our movement delta vector to align with the "forward" direction of the player
-        delta = rb.rotation * delta;
-        rb.AddForce(delta, ForceMode.VelocityChange);
-        rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
+            // Apply sprinting if necessary
+            delta.z *= IsSprinting() ? scriptableObject.sprintMultiplier : 1;
+
+            // Rotate our movement delta vector to align with the "forward" direction of the player
+            delta = rb.rotation * delta;
+            rb.AddForce(delta, ForceMode.VelocityChange);
+            rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
+        }
     }
 
     private void Jump()
@@ -220,14 +219,36 @@ public class PlayerController : MonoBehaviour
         return (new(didBottomHit, bottomHit), new(didTopHit, topHit));
     }
 
-    private bool CanSprint() =>
-        sprint > 0 && move.z > 0 && isGrounded && playerStamina.CanUseStamina();
+    private void UpdatePlayerState()
+    {
+        if (!isGrounded)
+        {
+            playerAnimator.SetState("Falling");
+        }
+        else if (IsSprinting())
+        {
+            playerAnimator.SetState("Sprint");
+        }
+        else if (IsWalking())
+        {
+            playerAnimator.SetState("Walk");
+        }
+        else
+        {
+            playerAnimator.SetState("Idle");
+        }
+    }
 
     private void UpdateStamina()
     {
-        if (CanSprint())
+        if (IsSprinting())
         {
             playerStamina.UseStamina(scriptableObject.sprintStaminaUsagePerSec * Time.deltaTime);
         }
     }
+
+    private bool IsWalking() => (!IsSprinting()) && move.z > 0 && isGrounded;
+
+    private bool IsSprinting() =>
+        sprint > 0 && move.z > 0 && isGrounded && playerStamina.CanUseStamina();
 }

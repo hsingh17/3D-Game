@@ -3,46 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class PlayerAnimatorScript : MonoBehaviour
+public class PlayerAnimator : MonoBehaviour
 {
-    public static readonly Dictionary<string, int> PlayerAnimationStates = new()
+    public static readonly Dictionary<string, AnimationState> PlayerAnimationStates = new()
     {
-        ["Idle"] = Animator.StringToHash("Idle"),
-        ["Walk"] = Animator.StringToHash("Walk"),
-        ["Sprint"] = Animator.StringToHash("Sprint"),
-        ["JumpStart"] = Animator.StringToHash("JumpStart"),
-        ["Falling"] = Animator.StringToHash("Falling"),
-        ["Land"] = Animator.StringToHash("Land"),
+        ["Idle"] = new AnimationState("Idle"),
+        ["Walk"] = new AnimationState("Walk", 2f),
+        ["Sprint"] = new AnimationState("Sprint"),
+        ["JumpStart"] = new AnimationState("JumpStart"),
+        ["Falling"] = new AnimationState("Falling"),
+        ["Land"] = new AnimationState("Land"),
     };
 
-    private int currentState;
-    private int newState;
-
     private Animator animator;
+    private AnimationState currentState;
+    private AnimationState newState;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         PlayerAnimationStates.TryGetValue("Idle", out currentState);
-        newState = -1;
+        newState = default;
     }
 
     private void Update()
     {
-        Debug.Log(currentState);
-        if (currentState != newState && newState != -1)
+        if (!currentState.Equals(newState) && !newState.Equals(default))
         {
-            animator.CrossFade(newState, 0.3f, 0);
+            animator.speed = newState.Speed;
+            animator.CrossFade(newState.Hash, 0.3f, 0);
             currentState = newState;
-            newState = -1;
+            newState = default;
         }
     }
 
     public void SetState(string newStateName)
     {
-        if (PlayerAnimationStates.TryGetValue(newStateName, out int tempState))
+        if (PlayerAnimationStates.TryGetValue(newStateName, out AnimationState tempState))
         {
-            newState = currentState;
+            newState = tempState;
         }
     }
 }
