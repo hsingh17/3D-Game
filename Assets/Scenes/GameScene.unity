@@ -344,7 +344,7 @@ PrefabInstance:
     - target: {fileID: 3657628448032643689, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
       propertyPath: hudStaminaController
       value: 
-      objectReference: {fileID: 723189563}
+      objectReference: {fileID: 0}
     - target: {fileID: 4217585310534970871, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.13299
@@ -10200,9 +10200,9 @@ GameObject:
   m_Component:
   - component: {fileID: 723189562}
   - component: {fileID: 723189561}
-  - component: {fileID: 723189563}
+  - component: {fileID: 723189564}
   m_Layer: 5
-  m_Name: HudPanelRenderer
+  m_Name: HudManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10281,7 +10281,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 247035744}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &723189563
+--- !u!114 &723189564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10290,9 +10290,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 723189560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ccab18e96878e44aaa153d451daff70, type: 3}
+  m_Script: {fileID: 11500000, guid: 90e0622ab7df7774dacea8ef63e72c41, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HudStaminaController
+  m_EditorClassIdentifier: Assembly-CSharp::HudManager
 --- !u!43 &803534391
 Mesh:
   m_ObjectHideFlags: 0

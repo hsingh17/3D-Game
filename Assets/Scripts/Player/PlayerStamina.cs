@@ -8,9 +8,6 @@ public class PlayerStamina : MonoBehaviour
     private EntityScriptableObject scriptableObject;
 
     [SerializeField]
-    private HudStaminaController hudStaminaController;
-
-    [SerializeField]
     private float regenWaitTimeSeconds;
 
     private float timeSinceLastStaminaConsumingAction;
@@ -26,7 +23,7 @@ public class PlayerStamina : MonoBehaviour
             CurrentStamina = Mathf.Clamp(CurrentStamina - consumedStamina, 0, MaxStamina);
             timeSinceLastStaminaConsumingAction = 0;
             blockStaminaUsage = CurrentStamina == 0;
-            hudStaminaController.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
+            HudManager.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
         }
     }
 
@@ -69,7 +66,7 @@ public class PlayerStamina : MonoBehaviour
                 blockStaminaUsage = false;
             }
 
-            hudStaminaController.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
+            HudManager.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
         }
     }
 }
