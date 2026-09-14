@@ -229,9 +229,13 @@ public class PlayerController : MonoBehaviour
         {
             playerAnimator.SetState("Sprint");
         }
-        else if (IsWalking())
+        else if (IsWalkingForward())
         {
-            playerAnimator.SetState("Walk");
+            playerAnimator.SetState("WalkForward");
+        }
+        else if (IsWalkingBackward())
+        {
+            playerAnimator.SetState("WalkBackward");
         }
         else
         {
@@ -247,7 +251,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsWalking() => (!IsSprinting()) && move.z > 0 && isGrounded;
+    private bool IsWalkingForward() => (!IsSprinting()) && move.z > 0 && isGrounded;
+
+    private bool IsWalkingBackward() => (!IsSprinting()) && move.z < 0 && isGrounded;
 
     private bool IsSprinting() =>
         sprint > 0 && move.z > 0 && isGrounded && playerStamina.CanUseStamina();
