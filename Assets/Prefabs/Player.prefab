@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8710449862655204718}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.0000006, z: 0}
+  m_LocalPosition: {x: 0, y: 0.726, z: 0.152}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -164,15 +164,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b9a25a36bad73ba4b9d504f3d2da6b2f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.13299
+      value: 7.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b9a25a36bad73ba4b9d504f3d2da6b2f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.79908
+      value: -12.84
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b9a25a36bad73ba4b9d504f3d2da6b2f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.89311
+      value: 16.96
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b9a25a36bad73ba4b9d504f3d2da6b2f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -263,10 +263,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25854874
-  m_Height: 2.3149781
+  m_Radius: 0.13697815
+  m_Height: 2.1453438
   m_Direction: 1
-  m_Center: {x: 0, y: 0.09070068, z: -0.024515152}
+  m_Center: {x: -0.015956163, y: -0.23518276, z: -0.0105781555}
 --- !u!54 &7685475185417871785
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -337,7 +337,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStamina
   scriptableObject: {fileID: 11400000, guid: ed977b650e6995649b2f19a98231abba, type: 2}
-  hudStaminaController: {fileID: 0}
   regenWaitTimeSeconds: 0.5
 --- !u!114 &8990022614481019751
 MonoBehaviour:

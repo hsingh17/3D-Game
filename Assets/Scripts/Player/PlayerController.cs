@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerStamina))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
     public struct HitCheck
@@ -104,11 +105,11 @@ public class PlayerController : MonoBehaviour
     private void CheckGrounded()
     {
         isGrounded = Physics.SphereCast(
-            rb.position,
+            collider.center,
             collider.radius,
             Vector3.down,
             out _,
-            (collider.height / 2) - collider.radius + groundCheckPadding,
+            (collider.height / 2) + groundCheckPadding,
             ground.value
         );
     }
@@ -132,6 +133,7 @@ public class PlayerController : MonoBehaviour
             // Rotate our movement delta vector to align with the "forward" direction of the player
             delta = rb.rotation * delta;
             rb.AddForce(delta, ForceMode.VelocityChange);
+            Debug.Log(rb.position);
             rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
         }
     }
@@ -223,7 +225,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isGrounded)
         {
-            playerAnimator.SetState("Falling");
+            playerAnimator.SetState("Idle");
         }
         else if (IsSprinting())
         {
