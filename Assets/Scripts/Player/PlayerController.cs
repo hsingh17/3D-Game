@@ -199,10 +199,11 @@ public class PlayerController : MonoBehaviour
     private (HitCheck bottomHit, HitCheck topHit) CheckSteps()
     {
         float distToFeet = collider.height / 2 + stepCheckPadding;
-        Vector3 playerFeet = rb.position + (distToFeet * Vector3.down);
+        Vector3 playerFeet = transform.TransformPoint(collider.center) + distToFeet * Vector3.down;
         Ray bottomRay = new(playerFeet, transform.forward);
         Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), transform.forward);
-
+        Debug.DrawRay(bottomRay.origin, bottomRay.direction);
+        Debug.DrawRay(topRay.origin, topRay.direction);
         bool didBottomHit = Physics.Raycast(
             bottomRay,
             out RaycastHit bottomHit,
@@ -216,6 +217,7 @@ public class PlayerController : MonoBehaviour
             stepCheckDistance,
             ground.value
         );
+        Debug.Log($"B: {didBottomHit}/ T: {didTopHit}");
 
         return (new(didBottomHit, bottomHit), new(didTopHit, topHit));
     }
