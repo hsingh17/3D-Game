@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerStamina))]
-[RequireComponent(typeof(PlayerAnimator))]
 public class PlayerController : MonoBehaviour
 {
     public struct HitCheck
@@ -57,7 +56,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float stepSmoothing;
 
+    [SerializeField]
     private PlayerAnimator playerAnimator;
+
     private PlayerStamina playerStamina;
     private CapsuleCollider collider;
     private Rigidbody rb;
@@ -79,7 +80,6 @@ public class PlayerController : MonoBehaviour
         collider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         playerStamina = GetComponent<PlayerStamina>();
-        playerAnimator = GetComponent<PlayerAnimator>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
@@ -105,11 +105,11 @@ public class PlayerController : MonoBehaviour
     private void CheckGrounded()
     {
         isGrounded = Physics.SphereCast(
-            collider.center,
+            transform.TransformPoint(collider.center),
             collider.radius,
             Vector3.down,
             out _,
-            (collider.height / 2) + groundCheckPadding,
+            (collider.height / 2) - collider.radius + groundCheckPadding,
             ground.value
         );
     }
@@ -133,7 +133,6 @@ public class PlayerController : MonoBehaviour
             // Rotate our movement delta vector to align with the "forward" direction of the player
             delta = rb.rotation * delta;
             rb.AddForce(delta, ForceMode.VelocityChange);
-            Debug.Log(rb.position);
             rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
         }
     }
