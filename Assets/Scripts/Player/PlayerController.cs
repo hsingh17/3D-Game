@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +19,20 @@ public class PlayerController : MonoBehaviour
         {
             DidHit = didHit;
             Hit = hit;
+        }
+    }
+
+    public struct StairHitCheck
+    {
+        public bool DidHitStair { get; set; }
+        public HitCheck TopHit { get; set; }
+        public HitCheck BottomHit { get; set; }
+
+        public StairHitCheck(HitCheck topHit, HitCheck bottomHit)
+        {
+            TopHit = topHit;
+            BottomHit = bottomHit;
+            DidHitStair = bottomHit.DidHit && !topHit.DidHit;
         }
     }
 
@@ -116,10 +132,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        var (bottomHit, topHit) = CheckSteps();
-        bool doMoveUpStep = bottomHit.DidHit && !topHit.DidHit && move.z > 0;
-
-        if (doMoveUpStep)
+        if (MoveUpStep())
         {
             rb.MovePosition(rb.position + new Vector3(0, stepSmoothing, 0));
         }
@@ -196,14 +209,48 @@ public class PlayerController : MonoBehaviour
         sprint = sprintAction.ReadValue<float>();
     }
 
-    private (HitCheck bottomHit, HitCheck topHit) CheckSteps()
+    private bool MoveUpStep()
+    {
+        Dictionary<Vector3, StairHitCheck> stepChecks = CheckSteps();
+        foreach (var (dir, hitCheck) in stepChecks)
+        {
+            if (
+                hitCheck.DidHitStair
+                && (
+                    (dir == Vector3.forward && move.z > 0)
+                    || (dir == Vector3.back && move.z < 0)
+                    || (dir == Vector3.left && move.x < 0)
+                    || (dir == Vector3.right && move.x > 0)
+                )
+            )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Dictionary<Vector3, StairHitCheck> CheckSteps()
+    {
+        return new()
+        {
+            [Vector3.forward] = CheckStepInDirection(transform.forward),
+            [Vector3.back] = CheckStepInDirection(Quaternion.Euler(0, 180, 0) * transform.forward),
+            [Vector3.left] = CheckStepInDirection(Quaternion.Euler(0, -90, 0) * transform.forward),
+            [Vector3.right] = CheckStepInDirection(Quaternion.Euler(0, 90, 0) * transform.forward),
+        };
+    }
+
+    private StairHitCheck CheckStepInDirection(Vector3 direction)
     {
         float distToFeet = collider.height / 2 + stepCheckPadding;
         Vector3 playerFeet = transform.TransformPoint(collider.center) + distToFeet * Vector3.down;
-        Ray bottomRay = new(playerFeet, transform.forward);
-        Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), transform.forward);
+        Ray bottomRay = new(playerFeet, direction);
+        Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), direction);
+
         Debug.DrawRay(bottomRay.origin, bottomRay.direction);
         Debug.DrawRay(topRay.origin, topRay.direction);
+
         bool didBottomHit = Physics.Raycast(
             bottomRay,
             out RaycastHit bottomHit,
@@ -217,9 +264,8 @@ public class PlayerController : MonoBehaviour
             stepCheckDistance,
             ground.value
         );
-        // Debug.Log($"B: {didBottomHit}/ T: {didTopHit}");
 
-        return (new(didBottomHit, bottomHit), new(didTopHit, topHit));
+        return new(new(didTopHit, topHit), new(didBottomHit, bottomHit));
     }
 
     private void UpdatePlayerState()
