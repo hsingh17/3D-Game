@@ -8,13 +8,15 @@ public class PlayerAnimator : MonoBehaviour
     public static readonly Dictionary<string, AnimationState> PlayerAnimationStates = new()
     {
         ["Idle"] = new AnimationState("Idle"),
-        ["WalkForward"] = new AnimationState("WalkForward", 2f),
-        ["WalkBackward"] = new AnimationState("WalkBackward", 2f),
+        ["WalkForward"] = new AnimationState("WalkForward", 1.5f),
+        ["WalkBackward"] = new AnimationState("WalkBackward", 1.5f),
         ["Sprint"] = new AnimationState("Sprint"),
         ["JumpStart"] = new AnimationState("JumpStart"),
         ["Falling"] = new AnimationState("Falling"),
         ["Land"] = new AnimationState("Land"),
     };
+
+    public string CurrentState => currentState.Name;
 
     private Animator animator;
     private AnimationState currentState;

@@ -217,16 +217,26 @@ public class PlayerController : MonoBehaviour
             stepCheckDistance,
             ground.value
         );
-        Debug.Log($"B: {didBottomHit}/ T: {didTopHit}");
+        // Debug.Log($"B: {didBottomHit}/ T: {didTopHit}");
 
         return (new(didBottomHit, bottomHit), new(didTopHit, topHit));
     }
 
     private void UpdatePlayerState()
     {
-        if (!isGrounded)
+        if (DidInitiateJump())
         {
-            playerAnimator.SetState("Idle");
+            // TODO: Fix this since there's not enough time between starting jump and falling
+            playerAnimator.SetState("JumpStart");
+        }
+        else if (IsLanding())
+        {
+            // TODO: Fix this since there's not enough time between falling and landing
+            playerAnimator.SetState("Land");
+        }
+        else if (!isGrounded)
+        {
+            playerAnimator.SetState("Falling");
         }
         else if (IsSprinting())
         {
@@ -253,6 +263,10 @@ public class PlayerController : MonoBehaviour
             playerStamina.UseStamina(scriptableObject.sprintStaminaUsagePerSec * Time.deltaTime);
         }
     }
+
+    private bool IsLanding() => isGrounded && playerAnimator.CurrentState == "Falling";
+
+    private bool DidInitiateJump() => jump > 0 && isGrounded;
 
     private bool IsWalkingForward() => (!IsSprinting()) && move.z > 0 && isGrounded;
 
