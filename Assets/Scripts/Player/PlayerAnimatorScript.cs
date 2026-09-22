@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +16,6 @@ public class PlayerAnimator : MonoBehaviour
     };
 
     public string CurrentState => currentState.Name;
-
     private Animator animator;
     private AnimationState currentState;
     private AnimationState newState;

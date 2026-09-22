@@ -1797,9 +1797,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.26
-  m_Height: 2.2664852
+  m_Height: 2.1950576
   m_Direction: 1
-  m_Center: {x: 0, y: 1.05, z: -0.18}
+  m_Center: {x: 0, y: 1.0857137, z: -0.18}
 --- !u!54 &5109884000586646301
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1894,7 +1894,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   jumpCooldownSeconds: 0.5
-  groundCheckPadding: 0.5
+  groundCheckPadding: 0.1
+  minUngroundedTimeSeconds: 0.112
   stepCheckPadding: -0.13
   maxStepHeight: 0.4
   stepCheckDistance: 0.55

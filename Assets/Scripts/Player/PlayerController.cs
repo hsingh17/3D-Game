@@ -55,21 +55,31 @@ public class PlayerController : MonoBehaviour
     private LayerMask ground;
 
     [SerializeField]
+    [Range(0f, 10f)]
     private float jumpCooldownSeconds;
 
     [SerializeField]
+    [Range(0f, 1f)]
     private float groundCheckPadding;
 
     [SerializeField]
+    [Range(0f, 2f)]
+    private float minUngroundedTimeSeconds;
+
+    [SerializeField]
+    [Range(-1f, 1f)]
     private float stepCheckPadding;
 
     [SerializeField]
+    [Range(0f, 1f)]
     private float maxStepHeight;
 
     [SerializeField]
+    [Range(0f, 1f)]
     private float stepCheckDistance;
 
     [SerializeField]
+    [Range(0f, 1f)]
     private float stepSmoothing;
 
     [SerializeField]
@@ -87,6 +97,7 @@ public class PlayerController : MonoBehaviour
     private float sprint;
     private float jump;
     private float pitch;
+    private bool evaluatingGroundCheck = false;
     private bool isGrounded = true;
     private bool jumpOffCd = true;
 
@@ -120,7 +131,20 @@ public class PlayerController : MonoBehaviour
 
     private void CheckGrounded()
     {
-        isGrounded = Physics.SphereCast(
+        bool hit = DidHitGround();
+        if (hit)
+        {
+            isGrounded = hit;
+        }
+        else if (!hit && !evaluatingGroundCheck)
+        {
+            StartCoroutine(MinimumUngroundedTime());
+        }
+    }
+
+    private bool DidHitGround()
+    {
+        return Physics.SphereCast(
             transform.TransformPoint(collider.center),
             collider.radius,
             Vector3.down,
@@ -198,6 +222,14 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(jumpCooldownSeconds);
         jumpOffCd = true;
+    }
+
+    private IEnumerator MinimumUngroundedTime()
+    {
+        evaluatingGroundCheck = true;
+        yield return new WaitForSeconds(minUngroundedTimeSeconds);
+        evaluatingGroundCheck = false;
+        isGrounded = DidHitGround();
     }
 
     private void ReadActionInputs()
