@@ -1894,13 +1894,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   jumpCooldownSeconds: 0.5
-  groundCheckPadding: 0.1
+  groundCheckPadding: 0.2
   minUngroundedTimeSeconds: 0.112
-  stepCheckPadding: -0.13
-  maxStepHeight: 0.4
-  stepCheckDistance: 0.55
-  stepSmoothing: 0.27
   playerAnimator: {fileID: 203230751650839486}
+  maxSlopeAngle: 45
+  slopeCastPadding: 0.2
 --- !u!1 &5146274993262592170
 GameObject:
   m_ObjectHideFlags: 0

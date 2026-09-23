@@ -10,9 +10,7 @@ public class PlayerAnimator : MonoBehaviour
         ["WalkForward"] = new AnimationState("WalkForward", 1.5f),
         ["WalkBackward"] = new AnimationState("WalkBackward", 1.5f),
         ["Sprint"] = new AnimationState("Sprint"),
-        ["JumpStart"] = new AnimationState("JumpStart"),
         ["Falling"] = new AnimationState("Falling"),
-        ["Land"] = new AnimationState("Land"),
     };
 
     public string CurrentState => currentState.Name;
@@ -32,7 +30,7 @@ public class PlayerAnimator : MonoBehaviour
         if (!currentState.Equals(newState) && !newState.Equals(default))
         {
             animator.speed = newState.Speed;
-            animator.CrossFade(newState.Hash, 0.3f, 0);
+            animator.CrossFade(newState.Hash, 0.1f, 0);
             currentState = newState;
             newState = default;
         }

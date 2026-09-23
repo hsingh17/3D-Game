@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using System.Security.Cryptography;
+using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -67,23 +68,15 @@ public class PlayerController : MonoBehaviour
     private float minUngroundedTimeSeconds;
 
     [SerializeField]
-    [Range(-1f, 1f)]
-    private float stepCheckPadding;
-
-    [SerializeField]
-    [Range(0f, 1f)]
-    private float maxStepHeight;
-
-    [SerializeField]
-    [Range(0f, 1f)]
-    private float stepCheckDistance;
-
-    [SerializeField]
-    [Range(0f, 1f)]
-    private float stepSmoothing;
-
-    [SerializeField]
     private PlayerAnimator playerAnimator;
+
+    [SerializeField]
+    [Range(0f, 90f)]
+    private float maxSlopeAngle;
+
+    [SerializeField]
+    [Range(0f, 5f)]
+    private float slopeCastPadding;
 
     private PlayerStamina playerStamina;
     private CapsuleCollider collider;
@@ -100,6 +93,7 @@ public class PlayerController : MonoBehaviour
     private bool evaluatingGroundCheck = false;
     private bool isGrounded = true;
     private bool jumpOffCd = true;
+    private RaycastHit slopeHit;
 
     private void Awake()
     {
@@ -127,6 +121,7 @@ public class PlayerController : MonoBehaviour
         Look();
         Move();
         Jump();
+        ApplyGravity();
     }
 
     private void CheckGrounded()
@@ -146,7 +141,7 @@ public class PlayerController : MonoBehaviour
     {
         return Physics.SphereCast(
             transform.TransformPoint(collider.center),
-            collider.radius,
+            collider.radius / 2,
             Vector3.down,
             out _,
             (collider.height / 2) - collider.radius + groundCheckPadding,
@@ -156,21 +151,34 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (MoveUpStep())
+        Vector3 movementVector = scriptableObject.moveSpeed * move;
+
+        // Apply sprinting if necessary
+        movementVector.z *= IsSprinting() ? scriptableObject.sprintMultiplier : 1;
+
+        // Rotate movement vector to align with the "forward" direction of the player
+        movementVector = rb.rotation * movementVector;
+
+        if (OnSlope())
         {
-            rb.MovePosition(rb.position + new Vector3(0, stepSmoothing, 0));
+            // If on slope, then cast movement vector onto that slope
+            movementVector = Vector3.ProjectOnPlane(movementVector, slopeHit.normal);
+            // TODO: Add downward force when moving down plane to keep player from bouncing on slope
+            // rb.AddForce(Vector3.down * 80f, ForceMode.Acceleration);
         }
-        else
+
+        rb.AddForce(movementVector, ForceMode.VelocityChange);
+        rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
+    }
+
+    private void ApplyGravity()
+    {
+        if (!isGrounded)
         {
-            Vector3 delta = scriptableObject.moveSpeed * move;
-
-            // Apply sprinting if necessary
-            delta.z *= IsSprinting() ? scriptableObject.sprintMultiplier : 1;
-
-            // Rotate our movement delta vector to align with the "forward" direction of the player
-            delta = rb.rotation * delta;
-            rb.AddForce(delta, ForceMode.VelocityChange);
-            rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
+            rb.AddForce(
+                Physics.gravity * scriptableObject.gravityMultiplier,
+                ForceMode.Acceleration
+            );
         }
     }
 
@@ -181,13 +189,6 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(scriptableObject.jumpForce * jump * Vector3.up, ForceMode.VelocityChange);
             jumpOffCd = false;
             StartCoroutine(JumpCooldown());
-        }
-        else if (!isGrounded)
-        {
-            rb.AddForce(
-                Physics.gravity * scriptableObject.gravityMultiplier,
-                ForceMode.Acceleration
-            );
         }
     }
 
@@ -241,78 +242,9 @@ public class PlayerController : MonoBehaviour
         sprint = sprintAction.ReadValue<float>();
     }
 
-    private bool MoveUpStep()
-    {
-        Dictionary<Vector3, StairHitCheck> stepChecks = CheckSteps();
-        foreach (var (dir, hitCheck) in stepChecks)
-        {
-            if (
-                hitCheck.DidHitStair
-                && (
-                    (dir == Vector3.forward && move.z > 0)
-                    || (dir == Vector3.back && move.z < 0)
-                    || (dir == Vector3.left && move.x < 0)
-                    || (dir == Vector3.right && move.x > 0)
-                )
-            )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Dictionary<Vector3, StairHitCheck> CheckSteps()
-    {
-        return new()
-        {
-            [Vector3.forward] = CheckStepInDirection(transform.forward),
-            [Vector3.back] = CheckStepInDirection(Quaternion.Euler(0, 180, 0) * transform.forward),
-            [Vector3.left] = CheckStepInDirection(Quaternion.Euler(0, -90, 0) * transform.forward),
-            [Vector3.right] = CheckStepInDirection(Quaternion.Euler(0, 90, 0) * transform.forward),
-        };
-    }
-
-    private StairHitCheck CheckStepInDirection(Vector3 direction)
-    {
-        float distToFeet = collider.height / 2 + stepCheckPadding;
-        Vector3 playerFeet = transform.TransformPoint(collider.center) + distToFeet * Vector3.down;
-        Ray bottomRay = new(playerFeet, direction);
-        Ray topRay = new(playerFeet + (maxStepHeight * Vector3.up), direction);
-
-        Debug.DrawRay(bottomRay.origin, bottomRay.direction);
-        Debug.DrawRay(topRay.origin, topRay.direction);
-
-        bool didBottomHit = Physics.Raycast(
-            bottomRay,
-            out RaycastHit bottomHit,
-            stepCheckDistance,
-            ground.value
-        );
-
-        bool didTopHit = Physics.Raycast(
-            topRay,
-            out RaycastHit topHit,
-            stepCheckDistance,
-            ground.value
-        );
-
-        return new(new(didTopHit, topHit), new(didBottomHit, bottomHit));
-    }
-
     private void UpdatePlayerState()
     {
-        if (DidInitiateJump())
-        {
-            // TODO: Fix this since there's not enough time between starting jump and falling
-            playerAnimator.SetState("JumpStart");
-        }
-        else if (IsLanding())
-        {
-            // TODO: Fix this since there's not enough time between falling and landing
-            playerAnimator.SetState("Land");
-        }
-        else if (!isGrounded)
+        if (!isGrounded)
         {
             playerAnimator.SetState("Falling");
         }
@@ -342,14 +274,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsLanding() => isGrounded && playerAnimator.CurrentState == "Falling";
-
-    private bool DidInitiateJump() => jump > 0 && isGrounded;
-
     private bool IsWalkingForward() => (!IsSprinting()) && move.z > 0 && isGrounded;
 
     private bool IsWalkingBackward() => (!IsSprinting()) && move.z < 0 && isGrounded;
 
     private bool IsSprinting() =>
         sprint > 0 && move.z > 0 && isGrounded && playerStamina.CanUseStamina();
+
+    private bool OnSlope()
+    {
+        bool onSlope = Physics.Raycast(
+            transform.TransformPoint(collider.center),
+            Vector3.down,
+            out RaycastHit slopeHit,
+            collider.height / 2 + slopeCastPadding
+        );
+        float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+        return onSlope && angle != 0 && angle <= maxSlopeAngle;
+    }
 }
