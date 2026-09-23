@@ -161,10 +161,7 @@ public class PlayerController : MonoBehaviour
 
         if (OnSlope())
         {
-            // If on slope, then cast movement vector onto that slope
             movementVector = Vector3.ProjectOnPlane(movementVector, slopeHit.normal);
-            // TODO: Add downward force when moving down plane to keep player from bouncing on slope
-            // rb.AddForce(Vector3.down * 80f, ForceMode.Acceleration);
         }
 
         rb.AddForce(movementVector, ForceMode.VelocityChange);
@@ -286,7 +283,7 @@ public class PlayerController : MonoBehaviour
         bool onSlope = Physics.Raycast(
             transform.TransformPoint(collider.center),
             Vector3.down,
-            out RaycastHit slopeHit,
+            out slopeHit,
             collider.height / 2 + slopeCastPadding
         );
         float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
