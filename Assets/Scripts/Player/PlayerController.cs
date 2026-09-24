@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     }
 
     [SerializeField]
-    private EntityScriptableObject scriptableObject;
+    private EntityData scriptableObject;
 
     [SerializeField]
     private Camera camera;
@@ -192,7 +192,6 @@ public class PlayerController : MonoBehaviour
     private void Look()
     {
         RotatePlayer();
-        RotateCamera();
     }
 
     private void RotatePlayer()
@@ -201,17 +200,6 @@ public class PlayerController : MonoBehaviour
         rb.rotation = Quaternion.Euler(
             curRotationEulerAngles.x,
             curRotationEulerAngles.y + (look.x * mouseSensitivity.x),
-            curRotationEulerAngles.z
-        );
-    }
-
-    private void RotateCamera()
-    {
-        Vector3 curRotationEulerAngles = camera.transform.rotation.eulerAngles;
-        pitch = Mathf.Clamp(pitch + (-look.y * mouseSensitivity.y), pitchMin, pitchMax);
-        camera.transform.rotation = Quaternion.Euler(
-            pitch,
-            curRotationEulerAngles.y,
             curRotationEulerAngles.z
         );
     }

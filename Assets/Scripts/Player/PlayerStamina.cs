@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerStamina : MonoBehaviour
 {
     [SerializeField]
-    private EntityScriptableObject scriptableObject;
+    private EntityData scriptableObject;
 
     [SerializeField]
     private float regenWaitTimeSeconds;

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Entity", menuName = "Scriptable Objects/Entity")]
-public class EntityScriptableObject : ScriptableObject
+public class EntityData : ScriptableObject
 {
     public float jumpForce;
     public float moveSpeed;
