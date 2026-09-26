@@ -1,11 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting.ReorderableList.Element_Adder_Menu;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerStamina))]
@@ -44,15 +39,6 @@ public class PlayerController : MonoBehaviour
     private Camera camera;
 
     [SerializeField]
-    private MouseSensitivity mouseSensitivity;
-
-    [SerializeField]
-    private float pitchMin;
-
-    [SerializeField]
-    private float pitchMax;
-
-    [SerializeField]
     private LayerMask ground;
 
     [SerializeField]
@@ -78,18 +64,10 @@ public class PlayerController : MonoBehaviour
     [Range(0f, 5f)]
     private float slopeCastPadding;
 
+    private InputReader inputReader;
     private PlayerStamina playerStamina;
     private CapsuleCollider collider;
     private Rigidbody rb;
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction lookAction;
-    private InputAction sprintAction;
-    private Vector3 move;
-    private Vector2 look;
-    private float sprint;
-    private float jump;
-    private float pitch;
     private bool evaluatingGroundCheck = false;
     private bool isGrounded = true;
     private bool jumpOffCd = true;
@@ -97,20 +75,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        PlayerInput playerInput = GetComponent<PlayerInput>();
         collider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         playerStamina = GetComponent<PlayerStamina>();
-        moveAction = playerInput.actions["Move"];
-        jumpAction = playerInput.actions["Jump"];
-        lookAction = playerInput.actions["Look"];
-        sprintAction = playerInput.actions["Sprint"];
+        inputReader = GetComponent<InputReader>();
         rb.useGravity = false;
     }
 
     private void Update()
     {
-        ReadActionInputs();
         UpdateStamina();
         UpdatePlayerState();
     }
@@ -151,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector3 movementVector = scriptableObject.moveSpeed * move;
+        Vector3 movementVector = scriptableObject.moveSpeed * inputReader.Move;
 
         // Apply sprinting if necessary
         movementVector.z *= IsSprinting() ? scriptableObject.sprintMultiplier : 1;
@@ -181,9 +154,12 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (isGrounded && jumpOffCd && jump > 0)
+        if (isGrounded && jumpOffCd && inputReader.Jump > 0)
         {
-            rb.AddForce(scriptableObject.jumpForce * jump * Vector3.up, ForceMode.VelocityChange);
+            rb.AddForce(
+                scriptableObject.jumpForce * inputReader.Jump * Vector3.up,
+                ForceMode.VelocityChange
+            );
             jumpOffCd = false;
             StartCoroutine(JumpCooldown());
         }
@@ -199,7 +175,7 @@ public class PlayerController : MonoBehaviour
         Vector3 curRotationEulerAngles = rb.rotation.eulerAngles;
         rb.rotation = Quaternion.Euler(
             curRotationEulerAngles.x,
-            curRotationEulerAngles.y + (look.x * mouseSensitivity.x),
+            curRotationEulerAngles.y + (inputReader.Look.x * GameSettings.Instance().Sensitivity.x),
             curRotationEulerAngles.z
         );
     }
@@ -216,15 +192,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(minUngroundedTimeSeconds);
         evaluatingGroundCheck = false;
         isGrounded = DidHitGround();
-    }
-
-    private void ReadActionInputs()
-    {
-        Vector2 movement = moveAction.ReadValue<Vector2>();
-        jump = isGrounded ? jumpAction.ReadValue<float>() : 0;
-        move = new(movement.x, 0, movement.y);
-        look = lookAction.ReadValue<Vector2>();
-        sprint = sprintAction.ReadValue<float>();
     }
 
     private void UpdatePlayerState()
@@ -259,12 +226,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsWalkingForward() => (!IsSprinting()) && move.z > 0 && isGrounded;
+    private bool IsWalkingForward() => (!IsSprinting()) && inputReader.Move.z > 0 && isGrounded;
 
-    private bool IsWalkingBackward() => (!IsSprinting()) && move.z < 0 && isGrounded;
+    private bool IsWalkingBackward() => (!IsSprinting()) && inputReader.Move.z < 0 && isGrounded;
 
     private bool IsSprinting() =>
-        sprint > 0 && move.z > 0 && isGrounded && playerStamina.CanUseStamina();
+        inputReader.Sprint > 0
+        && inputReader.Move.z > 0
+        && isGrounded
+        && playerStamina.CanUseStamina();
 
     private bool OnSlope()
     {

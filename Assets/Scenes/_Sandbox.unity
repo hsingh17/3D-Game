@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 211480919}
   - component: {fileID: 211480924}
   - component: {fileID: 211480925}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -1606,7 +1606,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 392441433}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Items
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -2680,7 +2680,7 @@ Light:
   serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.8
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -9812,7 +9812,7 @@ GameObject:
   - component: {fileID: 652487206}
   - component: {fileID: 652487211}
   - component: {fileID: 652487212}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pipe
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -12985,7 +12985,7 @@ GameObject:
   - component: {fileID: 960294760}
   - component: {fileID: 960294765}
   - component: {fileID: 960294766}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torus
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -25823,7 +25823,7 @@ GameObject:
   - component: {fileID: 1095567251}
   - component: {fileID: 1095567256}
   - component: {fileID: 1095567257}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -72936,6 +72936,53 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1865663645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1865663647}
+  - component: {fileID: 1865663646}
+  m_Layer: 0
+  m_Name: Game Settings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1865663646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865663645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c9b38cacc688104d866c71b616fb56d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameSettings
+  sensitivity:
+    x: 0.25
+    y: 0.25
+--- !u!4 &1865663647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865663645}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.03412, y: -14.54908, z: 16.49571}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1947382836
 GameObject:
   m_ObjectHideFlags: 0
@@ -73525,8 +73572,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4932048629550421676, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4155741771424343231}
+    - targetCorrespondingSourceObject: {fileID: 7614339315571255860, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4155741771424343232}
   m_SourcePrefab: {fileID: 100100000, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+--- !u!1 &4155741771424343229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4932048629550421676, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+  m_PrefabInstance: {fileID: 4155741771424343228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4155741771424343230 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7614339315571255860, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+  m_PrefabInstance: {fileID: 4155741771424343228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4155741771424343231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155741771424343229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4339ac69293b1a4ca552b2236f7d0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputReader
+--- !u!114 &4155741771424343232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155741771424343230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 152345a5f7fd1c4419cf4d505f91f149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  inputReader: {fileID: 4155741771424343231}
+  pitchMin: -80
+  pitchMax: 80
+  thirdPersonModelLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -73537,3 +73630,4 @@ SceneRoots:
   - {fileID: 1718135547}
   - {fileID: 4155741771424343228}
   - {fileID: 392441433}
+  - {fileID: 1865663647}
