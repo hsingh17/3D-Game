@@ -73572,54 +73572,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4932048629550421676, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4155741771424343231}
-    - targetCorrespondingSourceObject: {fileID: 7614339315571255860, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4155741771424343232}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
---- !u!1 &4155741771424343229 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4932048629550421676, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
-  m_PrefabInstance: {fileID: 4155741771424343228}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4155741771424343230 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7614339315571255860, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
-  m_PrefabInstance: {fileID: 4155741771424343228}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4155741771424343231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4155741771424343229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4339ac69293b1a4ca552b2236f7d0f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputReader
---- !u!114 &4155741771424343232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4155741771424343230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 152345a5f7fd1c4419cf4d505f91f149, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  inputReader: {fileID: 4155741771424343231}
-  pitchMin: -80
-  pitchMax: 80
-  thirdPersonModelLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

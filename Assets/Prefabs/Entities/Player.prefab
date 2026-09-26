@@ -1753,6 +1753,7 @@ GameObject:
   - component: {fileID: 3249613529141302829}
   - component: {fileID: 1479040420434760011}
   - component: {fileID: 9121305707266057975}
+  - component: {fileID: 4223710854439188923}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1885,11 +1886,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   scriptableObject: {fileID: 11400000, guid: ed977b650e6995649b2f19a98231abba, type: 2}
   camera: {fileID: 5746161621164691333}
-  mouseSensitivity:
-    x: 0.25
-    y: 0.25
-  pitchMin: -80
-  pitchMax: 80
   ground:
     serializedVersion: 2
     m_Bits: 8
@@ -1899,6 +1895,18 @@ MonoBehaviour:
   playerAnimator: {fileID: 203230751650839486}
   maxSlopeAngle: 45
   slopeCastPadding: 0.2
+--- !u!114 &4223710854439188923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4932048629550421676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4339ac69293b1a4ca552b2236f7d0f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputReader
 --- !u!1 &5146274993262592170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2678,6 +2686,7 @@ GameObject:
   - component: {fileID: 5746161621164691333}
   - component: {fileID: 5823316592738892759}
   - component: {fileID: 4641207725300523897}
+  - component: {fileID: 3846094842080940299}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -2803,6 +2812,24 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &3846094842080940299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7614339315571255860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 152345a5f7fd1c4419cf4d505f91f149, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  inputReader: {fileID: 4223710854439188923}
+  pitchMin: -80
+  pitchMax: 80
+  thirdPersonModelLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &7670770905523853838
 GameObject:
   m_ObjectHideFlags: 0
