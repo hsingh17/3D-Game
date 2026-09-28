@@ -647,8 +647,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 872940605159438807}
-  - component: {fileID: 203230751650839486}
   - component: {fileID: 5879616475780843437}
+  - component: {fileID: 4431441773169853682}
   m_Layer: 7
   m_Name: 3rd Person Player Model
   m_TagString: Player
@@ -672,18 +672,6 @@ Transform:
   - {fileID: 7277928130238273777}
   m_Father: {fileID: 3166660606159145229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &203230751650839486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2012029094661954594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6deae87dc29f20a4fbe6356eee5a2c6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimatorScript
 --- !u!95 &5879616475780843437
 Animator:
   serializedVersion: 7
@@ -706,6 +694,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4431441773169853682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012029094661954594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a93711c74d7f04882b6bea5f760bf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
+  idleStateName: Idle
+  playerController: {fileID: 9121305707266057975}
 --- !u!1 &2502646509912658827
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,7 +1894,6 @@ MonoBehaviour:
   jumpCooldownSeconds: 0.5
   groundCheckPadding: 0.2
   minUngroundedTimeSeconds: 0.112
-  playerAnimator: {fileID: 203230751650839486}
   maxSlopeAngle: 45
   slopeCastPadding: 0.2
 --- !u!114 &4223710854439188923

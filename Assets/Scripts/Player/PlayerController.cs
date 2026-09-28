@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerStamina))]
+[RequireComponent(typeof(InputReader))]
 public class PlayerController : MonoBehaviour
 {
     public struct HitCheck
@@ -54,9 +55,6 @@ public class PlayerController : MonoBehaviour
     private float minUngroundedTimeSeconds;
 
     [SerializeField]
-    private Animator playerAnimator;
-
-    [SerializeField]
     [Range(0f, 90f)]
     private float maxSlopeAngle;
 
@@ -69,9 +67,10 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider collider;
     private Rigidbody rb;
     private bool evaluatingGroundCheck = false;
-    private bool isGrounded = true;
     private bool jumpOffCd = true;
     private RaycastHit slopeHit;
+
+    public bool IsGrounded { get; set; }
 
     private void Awake()
     {
@@ -79,13 +78,14 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerStamina = GetComponent<PlayerStamina>();
         inputReader = GetComponent<InputReader>();
+
         rb.useGravity = false;
+        IsGrounded = true;
     }
 
     private void Update()
     {
         UpdateStamina();
-        UpdatePlayerState();
     }
 
     private void FixedUpdate()
@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
         bool hit = DidHitGround();
         if (hit)
         {
-            isGrounded = hit;
+            IsGrounded = hit;
         }
         else if (!hit && !evaluatingGroundCheck)
         {
@@ -138,12 +138,12 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.AddForce(movementVector, ForceMode.VelocityChange);
-        rb.linearDamping = isGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
+        rb.linearDamping = IsGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
     }
 
     private void ApplyGravity()
     {
-        if (!isGrounded)
+        if (!IsGrounded)
         {
             rb.AddForce(
                 Physics.gravity * scriptableObject.gravityMultiplier,
@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (isGrounded && jumpOffCd && inputReader.Jump > 0)
+        if (IsGrounded && jumpOffCd && inputReader.Jump > 0)
         {
             rb.AddForce(
                 scriptableObject.jumpForce * inputReader.Jump * Vector3.up,
@@ -191,31 +191,7 @@ public class PlayerController : MonoBehaviour
         evaluatingGroundCheck = true;
         yield return new WaitForSeconds(minUngroundedTimeSeconds);
         evaluatingGroundCheck = false;
-        isGrounded = DidHitGround();
-    }
-
-    private void UpdatePlayerState()
-    {
-        if (!isGrounded)
-        {
-            playerAnimator.SetState("Falling");
-        }
-        else if (IsSprinting())
-        {
-            playerAnimator.SetState("Sprint");
-        }
-        else if (IsWalkingForward())
-        {
-            playerAnimator.SetState("WalkForward");
-        }
-        else if (IsWalkingBackward())
-        {
-            playerAnimator.SetState("WalkBackward");
-        }
-        else
-        {
-            playerAnimator.SetState("Idle");
-        }
+        IsGrounded = DidHitGround();
     }
 
     private void UpdateStamina()
@@ -225,16 +201,6 @@ public class PlayerController : MonoBehaviour
             playerStamina.UseStamina(scriptableObject.sprintStaminaUsagePerSec * Time.deltaTime);
         }
     }
-
-    private bool IsWalkingForward() => (!IsSprinting()) && inputReader.Move.z > 0 && isGrounded;
-
-    private bool IsWalkingBackward() => (!IsSprinting()) && inputReader.Move.z < 0 && isGrounded;
-
-    private bool IsSprinting() =>
-        inputReader.Sprint > 0
-        && inputReader.Move.z > 0
-        && isGrounded
-        && playerStamina.CanUseStamina();
 
     private bool OnSlope()
     {
@@ -247,4 +213,14 @@ public class PlayerController : MonoBehaviour
         float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
         return onSlope && angle != 0 && angle <= maxSlopeAngle;
     }
+
+    public bool IsWalkingForward() => (!IsSprinting()) && inputReader.Move.z > 0 && IsGrounded;
+
+    public bool IsWalkingBackward() => (!IsSprinting()) && inputReader.Move.z < 0 && IsGrounded;
+
+    public bool IsSprinting() =>
+        inputReader.Sprint > 0
+        && inputReader.Move.z > 0
+        && IsGrounded
+        && playerStamina.CanUseStamina();
 }

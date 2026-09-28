@@ -19,7 +19,7 @@ public class Animator : MonoBehaviour
         newState = default;
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if (!currentState.Equals(newState) && !newState.Equals(default))
         {
@@ -30,7 +30,7 @@ public class Animator : MonoBehaviour
         }
     }
 
-    public void SetState(string newStateName)
+    protected void SetState(string newStateName)
     {
         if (animationStates.TryGetValue(newStateName, out AnimationState tempState))
         {
