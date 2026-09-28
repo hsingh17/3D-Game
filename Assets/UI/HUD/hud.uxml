@@ -1,9 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/HUD/hud.uss?fileID=7433441132597879392&amp;guid=6c0cc90483a381449a19936b6f5e0ea1&amp;type=3#hud"/>
+    <Style src="project://database/Assets/UI/HUD/hp-stamina.uss?fileID=7433441132597879392&amp;guid=4004706fe54e77d408f3a1fd57f1824b&amp;type=3#hp-stamina"/>
+    <Style src="project://database/Assets/UI/HUD/crosshair.uss?fileID=7433441132597879392&amp;guid=150e90bac1fa4444cbffe2f28db1d25b&amp;type=3#crosshair"/>
     <ui:VisualElement name="hud" class="hud">
         <ui:VisualElement name="hp-stamina" class="hp-stamina-container">
             <ui:ProgressBar value="100" title="" enabled="true" picking-mode="Position" name="hp" class="hp"/>
             <ui:ProgressBar value="100" title="" enabled="true" picking-mode="Position" name="stamina" class="stamina"/>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement name="crosshair" class="crosshair"/>
 </ui:UXML>
