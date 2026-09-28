@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
     private float minUngroundedTimeSeconds;
 
     [SerializeField]
-    private PlayerAnimator playerAnimator;
+    private Animator playerAnimator;
 
     [SerializeField]
     [Range(0f, 90f)]
