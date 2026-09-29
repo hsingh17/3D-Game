@@ -1756,6 +1756,7 @@ GameObject:
   - component: {fileID: 1479040420434760011}
   - component: {fileID: 9121305707266057975}
   - component: {fileID: 4223710854439188923}
+  - component: {fileID: 4122121430354758167}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1908,6 +1909,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4339ac69293b1a4ca552b2236f7d0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputReader
+--- !u!114 &4122121430354758167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4932048629550421676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5457eda63ca77d542baf8f529cb77405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableDetector
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  maxInteractDistance: 2.5
+  camera: {fileID: 5746161621164691333}
 --- !u!1 &5146274993262592170
 GameObject:
   m_ObjectHideFlags: 0
