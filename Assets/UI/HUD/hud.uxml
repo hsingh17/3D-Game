@@ -8,5 +8,8 @@
             <ui:ProgressBar value="100" title="" enabled="true" picking-mode="Position" name="stamina" class="stamina"/>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="crosshair" class="crosshair"/>
+
+    <ui:VisualElement name="crosshair-container" class="crosshair-container">
+        <ui:VisualElement name="crosshair" class="crosshair"/>
+    </ui:VisualElement>
 </ui:UXML>
