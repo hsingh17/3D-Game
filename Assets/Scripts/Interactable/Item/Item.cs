@@ -2,7 +2,20 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
 {
-    private void FixedUpdate() { }
+    public void Interact()
+    {
+        DisablePhysics();
+        PutItemInHand();
+    }
 
-    public void Interact() { }
+    private void DisablePhysics()
+    {
+        if (gameObject.TryGetComponent(out Rigidbody rb))
+        {
+            rb.isKinematic = true;
+            rb.detectCollisions = false;
+        }
+    }
+
+    private void PutItemInHand() { }
 }

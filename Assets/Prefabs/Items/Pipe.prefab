@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1620383290077565232}
   - component: {fileID: 6393408125817418609}
   - component: {fileID: 7164664028955321973}
+  - component: {fileID: 2328728855183418729}
   m_Layer: 8
   m_Name: Pipe
   m_TagString: Untagged
@@ -783,7 +784,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3041
+  m_VersionIndex: 3044
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -921,3 +922,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.3636778, y: 0.16770554, z: 1.7320501}
   m_Center: {x: 0.0000009536743, y: 0.0000019073486, z: 0}
+--- !u!114 &2328728855183418729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5913492197793307632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ce3202f0bbe114589a312f779883bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item

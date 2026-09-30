@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1016720684381247617}
   - component: {fileID: 4137020553206220094}
   - component: {fileID: 6402616053073191146}
+  - component: {fileID: 2049183579961767355}
   m_Layer: 8
   m_Name: Torus
   m_TagString: Untagged
@@ -11587,7 +11588,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1832
+  m_VersionIndex: 1838
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -11729,3 +11730,15 @@ CapsuleCollider:
   m_Height: 0.50000024
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2049183579961767355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29265272380515397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ce3202f0bbe114589a312f779883bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item

@@ -8,10 +8,12 @@ public class InputReader : MonoBehaviour
     private InputAction jumpAction;
     private InputAction lookAction;
     private InputAction sprintAction;
+    private InputAction interactAction;
     public Vector3 Move { get; private set; }
     public Vector2 Look { get; private set; }
     public float Sprint { get; private set; }
     public float Jump { get; private set; }
+    public float Interact { get; private set; }
 
     private void Awake()
     {
@@ -20,6 +22,7 @@ public class InputReader : MonoBehaviour
         jumpAction = playerInput.actions["Jump"];
         lookAction = playerInput.actions["Look"];
         sprintAction = playerInput.actions["Sprint"];
+        interactAction = playerInput.actions["Interact"];
     }
 
     private void Update()
@@ -29,5 +32,7 @@ public class InputReader : MonoBehaviour
         Move = new(movement.x, 0, movement.y);
         Look = lookAction.ReadValue<Vector2>();
         Sprint = sprintAction.ReadValue<float>();
+        Interact = interactAction.ReadValue<float>();
+        // TODO: Fix this interact to not allow holding of button
     }
 }

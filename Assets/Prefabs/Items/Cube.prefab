@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 577498578990442701}
   - component: {fileID: 2349683803329886774}
   - component: {fileID: 6493777977055252964}
+  - component: {fileID: 4545059059210134154}
   m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
@@ -249,7 +250,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2170
+  m_VersionIndex: 2176
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -383,3 +384,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 0.19172572, z: 0.25}
   m_Center: {x: 0, y: 0.0000009536743, z: 0}
+--- !u!114 &4545059059210134154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8012564581006090133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ce3202f0bbe114589a312f779883bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item

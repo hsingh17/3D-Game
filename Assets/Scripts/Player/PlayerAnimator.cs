@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[RequireComponent(typeof(UnityEngine.Animator))]
-public class PlayerAnimator : Animator
+[RequireComponent(typeof(GenericAnimator))]
+public class PlayerAnimator : GenericAnimator
 {
     [SerializeField]
     private PlayerController playerController;

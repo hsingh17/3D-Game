@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3647449008898225281}
   - component: {fileID: 3426235025051592951}
   - component: {fileID: 8165513666762184573}
+  - component: {fileID: 1863292718480954607}
   m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
@@ -33989,7 +33990,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2108
+  m_VersionIndex: 2114
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -34125,3 +34126,15 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.14243484
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1863292718480954607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4437903243504274772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97ce3202f0bbe114589a312f779883bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Item
