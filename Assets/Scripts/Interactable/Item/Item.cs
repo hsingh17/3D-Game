@@ -2,20 +2,21 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
 {
-    public void Interact()
+    public bool IsInteractable { get; set; }
+
+    private void Awake()
     {
-        DisablePhysics();
-        PutItemInHand();
+        IsInteractable = true;
     }
 
-    private void DisablePhysics()
+    public virtual void Interact()
     {
-        if (gameObject.TryGetComponent(out Rigidbody rb))
-        {
-            rb.isKinematic = true;
-            rb.detectCollisions = false;
-        }
+        // The real logic for item pick up is in Hand.cs
+        IsInteractable = false;
     }
 
-    private void PutItemInHand() { }
+    public virtual void Use()
+    {
+        Debug.Log("Used item");
+    }
 }

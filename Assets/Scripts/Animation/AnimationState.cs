@@ -9,14 +9,14 @@ public struct AnimationState
     public AnimationState(string name)
     {
         Name = name;
-        Hash = UnityEngine.Animator.StringToHash(name);
+        Hash = Animator.StringToHash(name);
         Speed = 1;
     }
 
     public AnimationState(string name, float speed)
     {
         Name = name;
-        Hash = UnityEngine.Animator.StringToHash(name);
+        Hash = Animator.StringToHash(name);
         Speed = speed;
     }
 

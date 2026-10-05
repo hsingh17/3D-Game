@@ -426,6 +426,56 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1714990013781239325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7582263486438465434}
+  - component: {fileID: 1682942609427135130}
+  m_Layer: 0
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7582263486438465434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714990013781239325}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.491, y: 1.606, z: 0.551}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3166660606159145229}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1682942609427135130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714990013781239325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5457eda63ca77d542baf8f529cb77405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHandler
+  layersToCheck:
+    serializedVersion: 2
+    m_Bits: 256
+  maxInteractDistance: 2.5
+  camera: {fileID: 5746161621164691333}
+  inputReader: {fileID: 4223710854439188923}
 --- !u!1 &1912001729360263788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1756,7 +1806,6 @@ GameObject:
   - component: {fileID: 1479040420434760011}
   - component: {fileID: 9121305707266057975}
   - component: {fileID: 4223710854439188923}
-  - component: {fileID: 4122121430354758167}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1779,6 +1828,7 @@ Transform:
   m_Children:
   - {fileID: 194551076990144531}
   - {fileID: 872940605159438807}
+  - {fileID: 7582263486438465434}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &9201160491023041691
@@ -1909,23 +1959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4339ac69293b1a4ca552b2236f7d0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputReader
---- !u!114 &4122121430354758167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4932048629550421676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5457eda63ca77d542baf8f529cb77405, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableDetector
-  interactableLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  maxInteractDistance: 2.5
-  camera: {fileID: 5746161621164691333}
 --- !u!1 &5146274993262592170
 GameObject:
   m_ObjectHideFlags: 0
