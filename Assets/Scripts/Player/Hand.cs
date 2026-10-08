@@ -1,6 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.UIElements;
 
 public class Hand : MonoBehaviour
 {
@@ -12,19 +11,31 @@ public class Hand : MonoBehaviour
     private float maxInteractDistance;
 
     [SerializeField]
-    private Camera camera;
+    private InputReader inputReader;
 
     [SerializeField]
-    private InputReader inputReader;
+    [Range(0, 100f)]
+    private float minThrowForce;
+
+    [SerializeField]
+    [Range(0, 200f)]
+    private float maxThrowForce;
 
     private bool detectedInteractable;
     private RaycastHit interactableRayCastInfo;
-    private bool itemInHand = false;
+    private Item itemInHand;
+    private Camera camera;
+
+    private void Awake()
+    {
+        camera = GetComponentInParent<Camera>();
+    }
 
     private void FixedUpdate()
     {
         CheckForInteractable();
         Interact();
+        Throw();
     }
 
     private void CheckForInteractable()
@@ -56,33 +67,28 @@ public class Hand : MonoBehaviour
             && interactable.IsInteractable
         )
         {
-            // Interact with the object
-            interactable.Interact();
-
             // Special logic if the interactable is an item
-            if (interactable is Item item)
+            if (interactable is Item item && !itemInHand)
             {
-                PickUpItem(item);
+                item.Interact(gameObject);
+                itemInHand = item;
+            }
+            else
+            {
+                interactable.Interact(gameObject);
             }
         }
     }
 
-    private void PickUpItem(Item item)
+    private void Throw()
     {
-        if (!itemInHand && item.gameObject.TryGetComponent(out Rigidbody rb))
+        if (!itemInHand || inputReader.Throw <= 0)
         {
-            itemInHand = true;
-
-            // Disable physics of the picked up item
-            rb.isKinematic = true;
-            rb.detectCollisions = false;
-
-            // Move object to hand position
-            item.gameObject.transform.SetParent(transform);
-            item.transform.SetLocalPositionAndRotation(
-                Vector3.zero,
-                Quaternion.Euler(Vector3.zero)
-            );
+            return;
         }
+
+        // TODO: This should range between min and max depending how long user held throw button for
+        itemInHand.Throw(camera.transform.forward * minThrowForce);
+        itemInHand = null;
     }
 }

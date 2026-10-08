@@ -55,6 +55,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "Throw",
+                    "type": "Button",
+                    "id": "25d1e5cb-3f3f-43d4-9f61-35f6709d2984",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -154,6 +164,17 @@
                     "processors": "",
                     "groups": ";KMB",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "de16b66d-0fd7-4a63-8543-4a8176ba1291",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";KMB",
+                    "action": "Throw",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
