@@ -14,12 +14,12 @@ public class Hand : MonoBehaviour
     private InputReader inputReader;
 
     [SerializeField]
-    [Range(0, 100f)]
-    private float minThrowForce;
+    [Range(1f, 200f)]
+    private float maxThrowForce;
 
     [SerializeField]
-    [Range(0, 200f)]
-    private float maxThrowForce;
+    [Range(1f, 10f)]
+    private float maxThrowChargeDuration;
 
     private bool detectedInteractable;
     private RaycastHit interactableRayCastInfo;
@@ -29,13 +29,18 @@ public class Hand : MonoBehaviour
     private void Awake()
     {
         camera = GetComponentInParent<Camera>();
+        inputReader.OnThrowEvent += Throw;
+    }
+
+    private void OnDestroy()
+    {
+        inputReader.OnThrowEvent -= Throw;
     }
 
     private void FixedUpdate()
     {
         CheckForInteractable();
         Interact();
-        Throw();
     }
 
     private void CheckForInteractable()
@@ -68,10 +73,13 @@ public class Hand : MonoBehaviour
         )
         {
             // Special logic if the interactable is an item
-            if (interactable is Item item && !itemInHand)
+            if (interactable is Item item)
             {
-                item.Interact(gameObject);
-                itemInHand = item;
+                if (!itemInHand)
+                {
+                    item.Interact(gameObject);
+                    itemInHand = item;
+                }
             }
             else
             {
@@ -80,15 +88,17 @@ public class Hand : MonoBehaviour
         }
     }
 
-    private void Throw()
+    private void Throw(double duration)
     {
-        if (!itemInHand || inputReader.Throw <= 0)
+        if (itemInHand)
         {
-            return;
+            float force = (float)(
+                maxThrowForce
+                / maxThrowChargeDuration
+                * Math.Clamp(duration, 0, maxThrowChargeDuration)
+            );
+            itemInHand.Throw(camera.transform.forward * force);
+            itemInHand = null;
         }
-
-        // TODO: This should range between min and max depending how long user held throw button for
-        itemInHand.Throw(camera.transform.forward * minThrowForce);
-        itemInHand = null;
     }
 }

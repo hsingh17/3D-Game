@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 [RequireComponent(typeof(PlayerInput))]
 public class InputReader : MonoBehaviour
@@ -15,7 +16,9 @@ public class InputReader : MonoBehaviour
     public float Sprint { get; private set; }
     public float Jump { get; private set; }
     public float Interact { get; private set; }
-    public float Throw { get; private set; }
+
+    public delegate void OnThrow(double heldDuration);
+    public event OnThrow OnThrowEvent;
 
     private void Awake()
     {
@@ -26,6 +29,12 @@ public class InputReader : MonoBehaviour
         sprintAction = playerInput.actions["Sprint"];
         interactAction = playerInput.actions["Interact"];
         throwAction = playerInput.actions["Throw"];
+        throwAction.canceled += EndThrow;
+    }
+
+    private void OnDestroy()
+    {
+        throwAction.canceled -= EndThrow;
     }
 
     private void Update()
@@ -36,7 +45,10 @@ public class InputReader : MonoBehaviour
         Look = lookAction.ReadValue<Vector2>();
         Sprint = sprintAction.ReadValue<float>();
         Interact = interactAction.ReadValue<float>();
-        Throw = throwAction.ReadValue<float>();
-        // TODO: Fix interact to not allow holding of button and throw to allow hold
+    }
+
+    private void EndThrow(InputAction.CallbackContext ctx)
+    {
+        OnThrowEvent?.Invoke(ctx.duration);
     }
 }

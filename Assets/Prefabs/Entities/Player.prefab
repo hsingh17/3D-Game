@@ -474,10 +474,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   maxInteractDistance: 2.5
-  camera: {fileID: 5746161621164691333}
   inputReader: {fileID: 4223710854439188923}
-  minThrowForce: 0
-  maxThrowForce: 0
+  maxThrowForce: 20
+  maxThrowChargeDuration: 2
 --- !u!1 &1912001729360263788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,7 +1898,19 @@ MonoBehaviour:
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_DeviceRegainedEvent:
     m_PersistentCalls:
       m_Calls: []
