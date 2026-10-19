@@ -1,6 +1,6 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 
 [RequireComponent(typeof(PlayerInput))]
 public class InputReader : MonoBehaviour
@@ -17,8 +17,7 @@ public class InputReader : MonoBehaviour
     public float Jump { get; private set; }
     public float Interact { get; private set; }
 
-    public delegate void OnThrow(double heldDuration);
-    public event OnThrow OnThrowEvent;
+    public Action<double> OnThrowEvent;
 
     private void Awake()
     {
@@ -29,6 +28,7 @@ public class InputReader : MonoBehaviour
         sprintAction = playerInput.actions["Sprint"];
         interactAction = playerInput.actions["Interact"];
         throwAction = playerInput.actions["Throw"];
+        throwAction.performed += ChargeThrow;
         throwAction.canceled += EndThrow;
     }
 
@@ -47,8 +47,7 @@ public class InputReader : MonoBehaviour
         Interact = interactAction.ReadValue<float>();
     }
 
-    private void EndThrow(InputAction.CallbackContext ctx)
-    {
-        OnThrowEvent?.Invoke(ctx.duration);
-    }
+    private void ChargeThrow(InputAction.CallbackContext ctx) => Debug.Log(ctx.duration);
+
+    private void EndThrow(InputAction.CallbackContext ctx) => OnThrowEvent?.Invoke(ctx.duration);
 }

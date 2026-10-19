@@ -1,0 +1,26 @@
+.throw-charge-container {
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.throw-charge {
+    position: relative;
+    left: 5%;
+    width: 300px;
+    rotate: -90%;
+}
+
+.throw-charge .unity-progress-bar__container {
+    max-height: none;
+    min-height: 0;
+    height: 35px;
+}
+
+.throw-charge .unity-progress-bar__progress {
+    background-color: rgb(255, 0, 0);
+}

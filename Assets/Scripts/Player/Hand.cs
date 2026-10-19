@@ -26,6 +26,8 @@ public class Hand : MonoBehaviour
     private Item itemInHand;
     private Camera camera;
 
+    public float MaxThrowChargeDuration() => maxThrowChargeDuration;
+
     private void Awake()
     {
         camera = GetComponentInParent<Camera>();

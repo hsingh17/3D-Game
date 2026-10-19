@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 public class HudManager : MonoBehaviour
 {
     private ProgressBar staminaBar;
+    private ProgressBar throwChargeBar;
     private static HudManager instance;
 
     private void Awake()
@@ -17,8 +18,11 @@ public class HudManager : MonoBehaviour
     private void OnDisable() =>
         GetComponent<PanelRenderer>().UnregisterUIReloadCallback(OnUIReload);
 
-    private void OnUIReload(PanelRenderer pr, VisualElement root) =>
+    private void OnUIReload(PanelRenderer pr, VisualElement root)
+    {
         staminaBar = root.Q<ProgressBar>("stamina");
+        throwChargeBar = root.Q<ProgressBar>("throw-charge");
+    }
 
     private HudManager() { }
 
