@@ -1,36 +1,78 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(PanelRenderer))]
 public class HudManager : MonoBehaviour
 {
+    public static HudManager Instance;
     private ProgressBar staminaBar;
     private ProgressBar throwChargeBar;
-    private static HudManager instance;
+    private bool chargingThrow;
+    private float timeStartChargingThrow;
+
+    private HudManager() { }
 
     private void Awake()
     {
-        instance = instance != null ? instance : this;
+        Instance = Instance != null ? Instance : this;
+        chargingThrow = false;
     }
 
-    private void OnEnable() => GetComponent<PanelRenderer>().RegisterUIReloadCallback(OnUIReload);
+    private void OnEnable()
+    {
+        GetComponent<PanelRenderer>().RegisterUIReloadCallback(OnUIReload);
+        PlayerStamina.OnStaminaUpdate += UpdateStaminaUI;
+        Hand.OnThrowStartEvent += StartThrow;
+        Hand.OnThrowReleaseEvent += EndThrow;
+    }
 
-    private void OnDisable() =>
+    private void OnDisable()
+    {
         GetComponent<PanelRenderer>().UnregisterUIReloadCallback(OnUIReload);
+        Hand.OnThrowStartEvent -= StartThrow;
+        Hand.OnThrowReleaseEvent -= EndThrow;
+    }
+
+    private void Update()
+    {
+        UpdateThrowCharge();
+    }
 
     private void OnUIReload(PanelRenderer pr, VisualElement root)
     {
         staminaBar = root.Q<ProgressBar>("stamina");
         throwChargeBar = root.Q<ProgressBar>("throw-charge");
+        throwChargeBar.visible = false;
     }
 
-    private HudManager() { }
-
-    public static void UpdateStaminaValueByProportion(float proportion)
+    private void UpdateStaminaUI(float currentStamina, float maxStamina)
     {
-        if (instance != null)
+        staminaBar.value = currentStamina;
+        staminaBar.highValue = maxStamina;
+    }
+
+    private void StartThrow(float maxThrowChargeDuration)
+    {
+        throwChargeBar.value = 0;
+        throwChargeBar.highValue = maxThrowChargeDuration;
+        chargingThrow = true;
+        timeStartChargingThrow = Time.time;
+        throwChargeBar.visible = true;
+    }
+
+    private void UpdateThrowCharge()
+    {
+        if (chargingThrow && throwChargeBar.value < throwChargeBar.highValue)
         {
-            instance.staminaBar.value = instance.staminaBar.highValue * proportion;
+            throwChargeBar.value = Time.time - timeStartChargingThrow;
+            Debug.Log(throwChargeBar.value);
         }
+    }
+
+    private void EndThrow()
+    {
+        chargingThrow = false;
+        throwChargeBar.visible = false;
     }
 }

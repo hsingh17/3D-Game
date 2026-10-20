@@ -250,7 +250,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2176
+  m_VersionIndex: 2185
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -396,3 +396,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97ce3202f0bbe114589a312f779883bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
+  itemsParentGameObject: {fileID: 0}

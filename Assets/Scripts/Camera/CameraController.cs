@@ -4,9 +4,6 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
-    private InputReader inputReader;
-
-    [SerializeField]
     [Range(-90f, 90f)]
     private float pitchMin;
 
@@ -38,7 +35,7 @@ public class CameraController : MonoBehaviour
     {
         Vector3 curRotationEulerAngles = camera.transform.rotation.eulerAngles;
         pitch = Mathf.Clamp(
-            pitch + (-inputReader.Look.y * GameSettings.Instance().Sensitivity.y),
+            pitch + (-InputReader.Instance.Look.y * GameSettings.Instance().Sensitivity.y),
             pitchMin,
             pitchMax
         );

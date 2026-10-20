@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(PlayerStamina))]
-[RequireComponent(typeof(InputReader))]
 public class PlayerController : MonoBehaviour
 {
     public struct HitCheck
@@ -62,7 +61,6 @@ public class PlayerController : MonoBehaviour
     [Range(0f, 5f)]
     private float slopeCastPadding;
 
-    private InputReader inputReader;
     private PlayerStamina playerStamina;
     private CapsuleCollider collider;
     private Rigidbody rb;
@@ -77,7 +75,6 @@ public class PlayerController : MonoBehaviour
         collider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         playerStamina = GetComponent<PlayerStamina>();
-        inputReader = GetComponent<InputReader>();
 
         rb.useGravity = false;
         IsGrounded = true;
@@ -124,7 +121,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector3 movementVector = scriptableObject.moveSpeed * inputReader.Move;
+        Vector3 movementVector = scriptableObject.moveSpeed * InputReader.Instance.Move;
 
         // Apply sprinting if necessary
         movementVector.z *= IsSprinting() ? scriptableObject.sprintMultiplier : 1;
@@ -154,10 +151,10 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (IsGrounded && jumpOffCd && inputReader.Jump > 0)
+        if (IsGrounded && jumpOffCd && InputReader.Instance.Jump > 0)
         {
             rb.AddForce(
-                scriptableObject.jumpForce * inputReader.Jump * Vector3.up,
+                scriptableObject.jumpForce * InputReader.Instance.Jump * Vector3.up,
                 ForceMode.VelocityChange
             );
             jumpOffCd = false;
@@ -175,7 +172,8 @@ public class PlayerController : MonoBehaviour
         Vector3 curRotationEulerAngles = rb.rotation.eulerAngles;
         rb.rotation = Quaternion.Euler(
             curRotationEulerAngles.x,
-            curRotationEulerAngles.y + (inputReader.Look.x * GameSettings.Instance().Sensitivity.x),
+            curRotationEulerAngles.y
+                + (InputReader.Instance.Look.x * GameSettings.Instance().Sensitivity.x),
             curRotationEulerAngles.z
         );
     }
@@ -214,13 +212,15 @@ public class PlayerController : MonoBehaviour
         return onSlope && angle != 0 && angle <= maxSlopeAngle;
     }
 
-    public bool IsWalkingForward() => (!IsSprinting()) && inputReader.Move.z > 0 && IsGrounded;
+    public bool IsWalkingForward() =>
+        (!IsSprinting()) && InputReader.Instance.Move.z > 0 && IsGrounded;
 
-    public bool IsWalkingBackward() => (!IsSprinting()) && inputReader.Move.z < 0 && IsGrounded;
+    public bool IsWalkingBackward() =>
+        (!IsSprinting()) && InputReader.Instance.Move.z < 0 && IsGrounded;
 
     public bool IsSprinting() =>
-        inputReader.Sprint > 0
-        && inputReader.Move.z > 0
+        InputReader.Instance.Sprint > 0
+        && InputReader.Instance.Move.z > 0
         && IsGrounded
         && playerStamina.CanUseStamina();
 }

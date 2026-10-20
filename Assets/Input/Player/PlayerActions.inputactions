@@ -171,7 +171,7 @@
                     "name": "",
                     "id": "de16b66d-0fd7-4a63-8543-4a8176ba1291",
                     "path": "<Keyboard>/q",
-                    "interactions": "Hold",
+                    "interactions": "Hold(duration=1.401298E-45)",
                     "processors": "",
                     "groups": ";KMB",
                     "action": "Throw",

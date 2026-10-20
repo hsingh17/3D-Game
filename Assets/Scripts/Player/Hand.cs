@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour
 {
+    public static Action<float> OnThrowStartEvent;
+    public static Action OnThrowReleaseEvent;
+
     [SerializeField]
     private LayerMask layersToCheck;
 
     [SerializeField]
     [Range(0, 10f)]
     private float maxInteractDistance;
-
-    [SerializeField]
-    private InputReader inputReader;
 
     [SerializeField]
     [Range(1f, 200f)]
@@ -31,12 +31,18 @@ public class Hand : MonoBehaviour
     private void Awake()
     {
         camera = GetComponentInParent<Camera>();
-        inputReader.OnThrowEvent += Throw;
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        inputReader.OnThrowEvent -= Throw;
+        InputReader.OnThrowStartEvent += StartThrow;
+        InputReader.OnThrowReleaseEvent += Throw;
+    }
+
+    private void OnDisable()
+    {
+        InputReader.OnThrowStartEvent -= StartThrow;
+        InputReader.OnThrowReleaseEvent -= Throw;
     }
 
     private void FixedUpdate()
@@ -58,7 +64,7 @@ public class Hand : MonoBehaviour
 
     private void Interact()
     {
-        if (!detectedInteractable || inputReader.Interact <= 0)
+        if (!detectedInteractable || InputReader.Instance.Interact <= 0)
         {
             return;
         }
@@ -90,6 +96,14 @@ public class Hand : MonoBehaviour
         }
     }
 
+    private void StartThrow()
+    {
+        if (itemInHand)
+        {
+            OnThrowStartEvent?.Invoke(maxThrowChargeDuration);
+        }
+    }
+
     private void Throw(double duration)
     {
         if (itemInHand)
@@ -101,6 +115,7 @@ public class Hand : MonoBehaviour
             );
             itemInHand.Throw(camera.transform.forward * force);
             itemInHand = null;
+            OnThrowReleaseEvent?.Invoke();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,8 @@ public class PlayerStamina : MonoBehaviour
     public float MaxStamina { get; set; }
     public float CurrentStamina { get; set; }
 
+    public static Action<float, float> OnStaminaUpdate;
+
     public void UseStamina(float consumedStamina)
     {
         if (CurrentStamina > 0 && !blockStaminaUsage)
@@ -23,7 +26,7 @@ public class PlayerStamina : MonoBehaviour
             CurrentStamina = Mathf.Clamp(CurrentStamina - consumedStamina, 0, MaxStamina);
             timeSinceLastStaminaConsumingAction = 0;
             blockStaminaUsage = CurrentStamina == 0;
-            HudManager.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
+            OnStaminaUpdate?.Invoke(CurrentStamina, MaxStamina);
         }
     }
 
@@ -66,7 +69,7 @@ public class PlayerStamina : MonoBehaviour
                 blockStaminaUsage = false;
             }
 
-            HudManager.UpdateStaminaValueByProportion(CurrentStamina / MaxStamina);
+            OnStaminaUpdate?.Invoke(CurrentStamina, MaxStamina);
         }
     }
 }

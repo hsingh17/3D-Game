@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInput))]
 public class InputReader : MonoBehaviour
 {
+    public static InputReader Instance;
+    public static Action OnThrowStartEvent;
+    public static Action<double> OnThrowReleaseEvent;
+
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction lookAction;
@@ -17,10 +21,9 @@ public class InputReader : MonoBehaviour
     public float Jump { get; private set; }
     public float Interact { get; private set; }
 
-    public Action<double> OnThrowEvent;
-
     private void Awake()
     {
+        Instance = Instance != null ? Instance : this;
         PlayerInput playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
@@ -28,12 +31,17 @@ public class InputReader : MonoBehaviour
         sprintAction = playerInput.actions["Sprint"];
         interactAction = playerInput.actions["Interact"];
         throwAction = playerInput.actions["Throw"];
-        throwAction.performed += ChargeThrow;
+    }
+
+    private void OnEnable()
+    {
+        throwAction.performed += StartThrow;
         throwAction.canceled += EndThrow;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
+        throwAction.performed -= StartThrow;
         throwAction.canceled -= EndThrow;
     }
 
@@ -47,7 +55,8 @@ public class InputReader : MonoBehaviour
         Interact = interactAction.ReadValue<float>();
     }
 
-    private void ChargeThrow(InputAction.CallbackContext ctx) => Debug.Log(ctx.duration);
+    private void StartThrow(InputAction.CallbackContext ctx) => OnThrowStartEvent?.Invoke();
 
-    private void EndThrow(InputAction.CallbackContext ctx) => OnThrowEvent?.Invoke(ctx.duration);
+    private void EndThrow(InputAction.CallbackContext ctx) =>
+        OnThrowReleaseEvent?.Invoke(ctx.duration);
 }
