@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
 {
+    public GameObject itemsParentGameObject;
+
     [SerializeField]
-    private GameObject itemsParentGameObject;
+    private ItemData itemData;
 
     private Rigidbody rb;
 
@@ -47,6 +49,7 @@ public class Item : MonoBehaviour, IInteractable
         }
 
         rb.AddForce(force, ForceMode.Impulse);
+
         // Move object back to the "items" game object
         gameObject.transform.SetParent(itemsParentGameObject.transform);
     }

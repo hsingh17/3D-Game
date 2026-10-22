@@ -474,7 +474,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   maxInteractDistance: 2.5
-  inputReader: {fileID: 4223710854439188923}
   maxThrowForce: 20
   maxThrowChargeDuration: 2
 --- !u!1 &1912001729360263788
@@ -1949,7 +1948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20acf1de9613d9c4c81d564cdd6a496e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  scriptableObject: {fileID: 11400000, guid: ed977b650e6995649b2f19a98231abba, type: 2}
+  entityData: {fileID: 11400000, guid: ed977b650e6995649b2f19a98231abba, type: 2}
   camera: {fileID: 5746161621164691333}
   ground:
     serializedVersion: 2
@@ -2889,7 +2888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152345a5f7fd1c4419cf4d505f91f149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  inputReader: {fileID: 4223710854439188923}
   pitchMin: -80
   pitchMax: 80
   thirdPersonModelLayer:

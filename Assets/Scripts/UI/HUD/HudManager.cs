@@ -66,7 +66,6 @@ public class HudManager : MonoBehaviour
         if (chargingThrow && throwChargeBar.value < throwChargeBar.highValue)
         {
             throwChargeBar.value = Time.time - timeStartChargingThrow;
-            Debug.Log(throwChargeBar.value);
         }
     }
 

@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     }
 
     [SerializeField]
-    private EntityData scriptableObject;
+    private EntityData entityData;
 
     [SerializeField]
     private Camera camera;
@@ -121,10 +121,10 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector3 movementVector = scriptableObject.moveSpeed * InputReader.Instance.Move;
+        Vector3 movementVector = entityData.moveSpeed * InputReader.Instance.Move;
 
         // Apply sprinting if necessary
-        movementVector.z *= IsSprinting() ? scriptableObject.sprintMultiplier : 1;
+        movementVector.z *= IsSprinting() ? entityData.sprintMultiplier : 1;
 
         // Rotate movement vector to align with the "forward" direction of the player
         movementVector = rb.rotation * movementVector;
@@ -135,17 +135,14 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.AddForce(movementVector, ForceMode.VelocityChange);
-        rb.linearDamping = IsGrounded ? scriptableObject.groundDrag : scriptableObject.airDrag;
+        rb.linearDamping = IsGrounded ? entityData.groundDrag : entityData.airDrag;
     }
 
     private void ApplyGravity()
     {
         if (!IsGrounded)
         {
-            rb.AddForce(
-                Physics.gravity * scriptableObject.gravityMultiplier,
-                ForceMode.Acceleration
-            );
+            rb.AddForce(Physics.gravity * entityData.gravityMultiplier, ForceMode.Acceleration);
         }
     }
 
@@ -154,7 +151,7 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded && jumpOffCd && InputReader.Instance.Jump > 0)
         {
             rb.AddForce(
-                scriptableObject.jumpForce * InputReader.Instance.Jump * Vector3.up,
+                entityData.jumpForce * InputReader.Instance.Jump * Vector3.up,
                 ForceMode.VelocityChange
             );
             jumpOffCd = false;
@@ -196,7 +193,7 @@ public class PlayerController : MonoBehaviour
     {
         if (IsSprinting())
         {
-            playerStamina.UseStamina(scriptableObject.sprintStaminaUsagePerSec * Time.deltaTime);
+            playerStamina.UseStamina(entityData.sprintStaminaUsagePerSec * Time.deltaTime);
         }
     }
 
