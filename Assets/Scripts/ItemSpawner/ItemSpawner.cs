@@ -24,14 +24,17 @@ public class ItemSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnItem(ItemData itemData, Transform spawnPoint = null)
+    public Item SpawnItem(ItemData itemData, Transform spawnPoint = null)
     {
         GameObject spawnedItem = Instantiate(
             itemData.itemPrefab,
             spawnPoint != null ? spawnPoint : transform
         );
+
         spawnedItem.transform.SetParent(itemsParentGameObject.transform);
         spawnedItem.TryGetComponent(out Item item);
         item.itemsParentGameObject = itemsParentGameObject;
+
+        return item;
     }
 }

@@ -25,12 +25,14 @@ public class Hand : MonoBehaviour
     private RaycastHit interactableRayCastInfo;
     private Item itemInHand;
     private Camera camera;
+    private Inventory inventory;
 
     public float MaxThrowChargeDuration() => maxThrowChargeDuration;
 
     private void Awake()
     {
         camera = GetComponentInParent<Camera>();
+        TryGetComponent(out inventory);
     }
 
     private void OnEnable()
@@ -80,19 +82,27 @@ public class Hand : MonoBehaviour
             && interactable.IsInteractable
         )
         {
-            // Special logic if the interactable is an item
             if (interactable is Item item)
             {
-                if (!itemInHand)
-                {
-                    item.Interact(gameObject);
-                    itemInHand = item;
-                }
+                GrabItem(item);
             }
             else
             {
                 interactable.Interact(gameObject);
             }
+        }
+    }
+
+    private void GrabItem(Item item)
+    {
+        if (!itemInHand)
+        {
+            item.Interact(gameObject);
+            itemInHand = item;
+        }
+        else
+        {
+            inventory.PutItemInInventory(item);
         }
     }
 

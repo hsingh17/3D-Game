@@ -4,8 +4,7 @@ public class Item : MonoBehaviour, IInteractable
 {
     public GameObject itemsParentGameObject;
 
-    [SerializeField]
-    private ItemData itemData;
+    public ItemData itemData;
 
     private Rigidbody rb;
 

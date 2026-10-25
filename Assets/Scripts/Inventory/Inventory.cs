@@ -1,16 +1,35 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField]
+    private ItemSpawner itemSpawner;
+
+    [SerializeField]
+    private int maxItems;
+
+    [SerializeField]
+    private List<ItemData> items;
+
+    private void Awake()
     {
-        
+        items = new(maxItems);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PutItemInInventory(Item item)
     {
-        
+        if (items.Count >= maxItems)
+        {
+            return;
+        }
+
+        items.Add(item.itemData);
+        Destroy(item);
+    }
+
+    public Item PullItemFromInventory(int idx)
+    {
+        return idx < 0 || idx >= items.Count ? null : itemSpawner.SpawnItem(items[idx]);
     }
 }
