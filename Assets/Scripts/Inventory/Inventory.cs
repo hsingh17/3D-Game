@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour
         }
 
         items.Add(item.itemData);
-        Destroy(item);
+        Destroy(item.gameObject);
     }
 
     public Item PullItemFromInventory(int idx)

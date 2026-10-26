@@ -735,8 +735,31 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1714990013781239325, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4155741771424343230}
   m_SourcePrefab: {fileID: 100100000, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+--- !u!1 &4155741771424343229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1714990013781239325, guid: 9deae16e285aac24eb286b6c4769ea12, type: 3}
+  m_PrefabInstance: {fileID: 4155741771424343228}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4155741771424343230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155741771424343229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db3862cde38b0b4438d40c84e722a7dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  itemSpawner: {fileID: 1475610728}
+  maxItems: 5
+  items: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
