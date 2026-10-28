@@ -1,0 +1,31 @@
+.inventory-hotbar-container {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: end;
+}
+
+.inventory-hotbar-slot {
+    position: relative;
+    height: 75px;
+    width: 75px;
+    margin: 5px;
+    border-radius: 10px;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 2px;
+    background-color: rgba(1, 6, 10, 0.437);
+}
+
+.inventory-hotbar-slot-number {
+    position: absolute;
+    font-size: 20px;
+    color: #DCDCDC;
+    -unity-font-style: bold;
+    width: fit-content;
+    height: fit-content;
+    left: 1;
+    top: -7;
+}

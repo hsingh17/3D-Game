@@ -1,0 +1,35 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Inventory/inventory-hotbar.uss?fileID=7433441132597879392&amp;guid=064d75dbb57f4fd478da56a8975c3459&amp;type=3#inventory-hotbar"/>
+    <ui:VisualElement name="inventory-hotbar-container" class="inventory-hotbar-container">
+        <ui:VisualElement name="inventory-hotbar-slot-1" class="inventory-hotbar-slot">
+            <ui:Label text="1" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-2" class="inventory-hotbar-slot">
+            <ui:Label text="2" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-3" class="inventory-hotbar-slot">
+            <ui:Label text="3" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-4" class="inventory-hotbar-slot">
+            <ui:Label text="4" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-5" class="inventory-hotbar-slot">
+            <ui:Label text="5" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-6" class="inventory-hotbar-slot">
+            <ui:Label text="6" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-7" class="inventory-hotbar-slot">
+            <ui:Label text="7" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-8" class="inventory-hotbar-slot">
+            <ui:Label text="8" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-9" class="inventory-hotbar-slot">
+            <ui:Label text="9" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="inventory-hotbar-slot-0" class="inventory-hotbar-slot">
+            <ui:Label text="0" class="inventory-hotbar-slot-number"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
