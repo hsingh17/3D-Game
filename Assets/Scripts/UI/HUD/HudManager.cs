@@ -69,7 +69,7 @@ public class HudManager : MonoBehaviour
         }
     }
 
-    private void EndThrow()
+    private void EndThrow(Item _)
     {
         chargingThrow = false;
         throwChargeBar.visible = false;

@@ -4,7 +4,8 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     public static Action<float> OnThrowStartEvent;
-    public static Action OnThrowReleaseEvent;
+    public static Action<Item> OnThrowReleaseEvent;
+    public static Action<Item, bool> OnGrabItem;
 
     [SerializeField]
     private LayerMask layersToCheck;
@@ -95,15 +96,14 @@ public class Hand : MonoBehaviour
 
     private void GrabItem(Item item)
     {
+        bool pickedUpItem = false;
         if (!itemInHand)
         {
             item.Interact(gameObject);
             itemInHand = item;
+            pickedUpItem = true;
         }
-        else
-        {
-            inventory.PutItemInInventory(item);
-        }
+        OnGrabItem?.Invoke(item, pickedUpItem);
     }
 
     private void StartThrow()
@@ -124,8 +124,8 @@ public class Hand : MonoBehaviour
                 * Math.Clamp(duration, 0, maxThrowChargeDuration)
             );
             itemInHand.Throw(camera.transform.forward * force);
+            OnThrowReleaseEvent?.Invoke(itemInHand);
             itemInHand = null;
-            OnThrowReleaseEvent?.Invoke();
         }
     }
 }
