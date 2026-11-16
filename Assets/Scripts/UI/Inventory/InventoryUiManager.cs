@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -37,9 +36,10 @@ public class InventoryUiManager : MonoBehaviour
         if (idx >= 0 && idx < hotbarSlots.Count)
         {
             VisualElement slot = hotbarSlots[idx];
-            Debug.Log($"adding sprite for {itemData.name} to hotbar slot {idx}");
             Image image = new() { sprite = itemData.itemSprite };
             slot.Add(image);
+            image.SendToBack();
+            image.AddToClassList("inventory-hotbar-slot-sprite");
         }
     }
 

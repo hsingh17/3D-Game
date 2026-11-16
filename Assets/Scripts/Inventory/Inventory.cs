@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using UnityEngine;
 
@@ -20,6 +21,11 @@ public class Inventory : MonoBehaviour
     private void Awake()
     {
         items = new(maxItems);
+        // Preallocate list
+        for (int i = 0; i < items.Capacity; i++)
+        {
+            items.Add(null);
+        }
     }
 
     private void OnEnable()
@@ -36,22 +42,25 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(Item item, bool itemInHand)
     {
-        if (items.Count < maxItems)
+        int freeSlotIdx = GetFirstFreeSlot();
+        if (freeSlotIdx != -1)
         {
-            items.Add(item.itemData);
+            items[freeSlotIdx] = item.itemData;
 
+            // If the player already has an item in their hand,
+            // destroy the item being picked up off ground
             if (!itemInHand)
             {
                 Destroy(item.gameObject);
             }
 
-            OnAddItem?.Invoke(item.itemData, items.Count - 1);
+            OnAddItem?.Invoke(item.itemData, freeSlotIdx);
         }
     }
 
     public Item GetItem(int idx)
     {
-        return idx < 0 || idx >= items.Count ? null : itemSpawner.SpawnItem(items[idx]);
+        return idx < 0 || idx >= items.Capacity ? null : itemSpawner.SpawnItem(items[idx]);
     }
 
     public void RemoveItem(Item item)
@@ -61,7 +70,22 @@ public class Inventory : MonoBehaviour
         {
             ItemData itemData = items[idx];
             OnRemoveItem?.Invoke(idx);
-            items.RemoveAt(idx);
+            items[idx] = null;
         }
+    }
+
+    private int GetFirstFreeSlot()
+    {
+        int i;
+        for (i = 0; i < items.Capacity; i++)
+        {
+            ItemData item = items[i];
+            if (!item)
+            {
+                break;
+            }
+        }
+
+        return i >= items.Capacity ? -1 : i;
     }
 }

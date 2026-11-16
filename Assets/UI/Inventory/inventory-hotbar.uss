@@ -17,6 +17,9 @@
     border-style: solid;
     border-width: 2px;
     background-color: rgba(1, 6, 10, 0.437);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .inventory-hotbar-slot-number {
@@ -28,4 +31,8 @@
     height: fit-content;
     left: 1;
     top: -7;
+}
+
+.inventory-hotbar-slot-sprite {
+    scale: 0.5;
 }
