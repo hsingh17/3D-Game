@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public static Action<int> OnStart;
     public static Action<ItemData, int> OnAddItem;
     public static Action<int> OnRemoveItem;
+    public static Action<int, Item> OnGetItem;
 
     [SerializeField]
     private ItemSpawner itemSpawner;
@@ -26,6 +26,11 @@ public class Inventory : MonoBehaviour
         {
             items.Add(null);
         }
+    }
+
+    private void Start()
+    {
+        OnStart?.Invoke(maxItems);
     }
 
     private void OnEnable()
@@ -47,7 +52,7 @@ public class Inventory : MonoBehaviour
         {
             items[freeSlotIdx] = item.itemData;
 
-            // If the player already has an item in their hand,
+            // If the item being picked up is not going into the hand,
             // destroy the item being picked up off ground
             if (!itemInHand)
             {
@@ -60,7 +65,14 @@ public class Inventory : MonoBehaviour
 
     public Item GetItem(int idx)
     {
-        return idx < 0 || idx >= items.Capacity ? null : itemSpawner.SpawnItem(items[idx]);
+        if (idx < 0 || idx >= items.Capacity)
+        {
+            return null;
+        }
+
+        Item item = items[idx] ? itemSpawner.SpawnItem(items[idx]) : null;
+        OnGetItem?.Invoke(idx, item);
+        return item;
     }
 
     public void RemoveItem(Item item)

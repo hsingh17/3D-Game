@@ -40,12 +40,14 @@ public class Hand : MonoBehaviour
     {
         InputReader.OnThrowStartEvent += StartThrow;
         InputReader.OnThrowReleaseEvent += Throw;
+        InputReader.OnItemSlotSelect += SwapItemInHand;
     }
 
     private void OnDisable()
     {
         InputReader.OnThrowStartEvent -= StartThrow;
         InputReader.OnThrowReleaseEvent -= Throw;
+        InputReader.OnItemSlotSelect -= SwapItemInHand;
     }
 
     private void FixedUpdate()
@@ -126,6 +128,23 @@ public class Hand : MonoBehaviour
             itemInHand.Throw(camera.transform.forward * force);
             OnThrowReleaseEvent?.Invoke(itemInHand);
             itemInHand = null;
+        }
+    }
+
+    private void SwapItemInHand(int idx)
+    {
+        Item item = inventory.GetItem(idx);
+        // Destroy old item in hand
+        if (itemInHand)
+        {
+            Destroy(itemInHand.gameObject);
+        }
+
+        // Even if item returned is null, we still want to show player with nothing in hand
+        itemInHand = item;
+        if (item)
+        {
+            item.Interact(gameObject);
         }
     }
 }

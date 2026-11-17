@@ -1,0 +1,5 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Inventory/inventory.uss?fileID=7433441132597879392&amp;guid=064d75dbb57f4fd478da56a8975c3459&amp;type=3#inventory-hotbar"/>
+    <ui:VisualElement name="inventory-hotbar-container" class="inventory-hotbar-container">
+    </ui:VisualElement>
+</ui:UXML>
