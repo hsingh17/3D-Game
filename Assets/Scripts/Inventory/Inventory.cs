@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Action<int> OnStart;
-    public static Action<ItemData, int> OnAddItem;
+    public static Action<Item, int> OnAddItem;
     public static Action<int> OnRemoveItem;
     public static Action<int, Item> OnGetItem;
 
@@ -16,7 +16,9 @@ public class Inventory : MonoBehaviour
     private int maxItems;
 
     [SerializeField]
-    private List<ItemData> items;
+    private List<Item> items;
+
+    private int lastSelectedSlot = -1;
 
     private void Awake()
     {
@@ -47,19 +49,21 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(Item item, bool itemInHand)
     {
-        int freeSlotIdx = GetFirstFreeSlot();
+        int freeSlotIdx = lastSelectedSlot == -1 ? GetFirstFreeSlot() : lastSelectedSlot;
         if (freeSlotIdx != -1)
         {
-            items[freeSlotIdx] = item.itemData;
+            items[freeSlotIdx] = item;
 
             // If the item being picked up is not going into the hand,
             // destroy the item being picked up off ground
             if (!itemInHand)
             {
+                // This not working cuz it destroys reference to item in list
                 Destroy(item.gameObject);
             }
 
-            OnAddItem?.Invoke(item.itemData, freeSlotIdx);
+            OnAddItem?.Invoke(item, freeSlotIdx);
+            lastSelectedSlot = -1;
         }
     }
 
@@ -70,17 +74,20 @@ public class Inventory : MonoBehaviour
             return null;
         }
 
-        Item item = items[idx] ? itemSpawner.SpawnItem(items[idx]) : null;
+        Item item = items[idx] ? items[idx] : null;
+        // No item was retrieved when grabbing from here.
+        // Save the last selected slot for when player grabs item to put it into that slot
+        lastSelectedSlot = !item ? idx : -1;
+
         OnGetItem?.Invoke(idx, item);
         return item;
     }
 
     public void RemoveItem(Item item)
     {
-        int idx = items.IndexOf(item.itemData);
+        int idx = items.IndexOf(item);
         if (idx != -1)
         {
-            ItemData itemData = items[idx];
             OnRemoveItem?.Invoke(idx);
             items[idx] = null;
         }
@@ -91,7 +98,7 @@ public class Inventory : MonoBehaviour
         int i;
         for (i = 0; i < items.Capacity; i++)
         {
-            ItemData item = items[i];
+            Item item = items[i];
             if (!item)
             {
                 break;

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
@@ -5,6 +6,7 @@ public class Item : MonoBehaviour, IInteractable
     public GameObject itemsParentGameObject;
 
     public ItemData itemData;
+    private readonly Guid itemId = Guid.NewGuid();
 
     private Rigidbody rb;
 
@@ -51,5 +53,19 @@ public class Item : MonoBehaviour, IInteractable
 
         // Move object back to the "items" game object
         gameObject.transform.SetParent(itemsParentGameObject.transform);
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj != null
+            && obj.GetType() == GetType()
+            && obj is Item item
+            && item.name == name
+            && item.itemId == itemId;
+    }
+
+    public override int GetHashCode()
+    {
+        return itemId.GetHashCode();
     }
 }

@@ -21,7 +21,7 @@ public class InventoryUiManager : MonoBehaviour
     [SerializeField]
     private int maxHotbarSlots = 10;
     private int maxItems;
-    private int curSelectedHotbarSlot = -1;
+    private int curSelectedHotbarSlot = 0;
     private List<VisualElement> hotbarSlots;
 
     private void OnEnable()
@@ -45,6 +45,7 @@ public class InventoryUiManager : MonoBehaviour
     private void OnUIReload(PanelRenderer pr, VisualElement root)
     {
         DrawHotbarSlots(root);
+        HighlightInventorySlot(curSelectedHotbarSlot, null);
     }
 
     private void DrawHotbarSlots(VisualElement root)
@@ -74,12 +75,12 @@ public class InventoryUiManager : MonoBehaviour
         this.maxItems = maxItems;
     }
 
-    private void AddItemSpriteToHotbar(ItemData itemData, int idx)
+    private void AddItemSpriteToHotbar(Item item, int idx)
     {
         if (idx >= 0 && idx < hotbarSlots.Count)
         {
             VisualElement slot = hotbarSlots[idx];
-            Image image = new() { sprite = itemData.itemSprite };
+            Image image = new() { sprite = item.itemData.itemSprite };
             slot.Add(image);
             image.SendToBack();
             image.AddToClassList(inventoryHotbarSlotSpriteClassName);
