@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d96c73a32d59e14ca159dcccff0d5e0, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::EntityScriptableObject
-  jumpForce: 20
-  moveSpeed: 1
-  groundDrag: 7
-  airDrag: 6
-  gravityMultiplier: 7
-  sprintMultiplier: 2
-  sprintStaminaUsagePerSec: 50
-  maxStamina: 100
-  staminaRegenPerSec: 20
+  JumpForce: 20
+  MoveSpeed: 1
+  GroundDrag: 7
+  AirDrag: 6
+  GravityMultiplier: 7
+  SprintMultiplier: 2
+  SprintStaminaUsagePerSec: 50
+  MaxStamina: 100
+  StaminaRegenPerSec: 20

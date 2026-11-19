@@ -45,7 +45,7 @@ public class InventoryUiManager : MonoBehaviour
     private void OnUIReload(PanelRenderer pr, VisualElement root)
     {
         DrawHotbarSlots(root);
-        HighlightInventorySlot(curSelectedHotbarSlot, null);
+        HighlightInventorySlot(null, curSelectedHotbarSlot);
     }
 
     private void DrawHotbarSlots(VisualElement root)
@@ -75,12 +75,12 @@ public class InventoryUiManager : MonoBehaviour
         this.maxItems = maxItems;
     }
 
-    private void AddItemSpriteToHotbar(Item item, int idx)
+    private void AddItemSpriteToHotbar(ItemInstance item, int idx)
     {
         if (idx >= 0 && idx < hotbarSlots.Count)
         {
             VisualElement slot = hotbarSlots[idx];
-            Image image = new() { sprite = item.itemData.itemSprite };
+            Image image = new() { sprite = item.ItemData.ItemSprite };
             slot.Add(image);
             image.SendToBack();
             image.AddToClassList(inventoryHotbarSlotSpriteClassName);
@@ -97,7 +97,7 @@ public class InventoryUiManager : MonoBehaviour
         }
     }
 
-    private void HighlightInventorySlot(int idx, Item item)
+    private void HighlightInventorySlot(InteractableItem item, int idx)
     {
         if (idx >= 0 && idx < maxHotbarSlots)
         {

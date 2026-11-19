@@ -121,10 +121,10 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector3 movementVector = entityData.moveSpeed * InputReader.Instance.Move;
+        Vector3 movementVector = entityData.MoveSpeed * InputReader.Instance.Move;
 
         // Apply sprinting if necessary
-        movementVector.z *= IsSprinting() ? entityData.sprintMultiplier : 1;
+        movementVector.z *= IsSprinting() ? entityData.SprintMultiplier : 1;
 
         // Rotate movement vector to align with the "forward" direction of the player
         movementVector = rb.rotation * movementVector;
@@ -135,14 +135,14 @@ public class PlayerController : MonoBehaviour
         }
 
         rb.AddForce(movementVector, ForceMode.VelocityChange);
-        rb.linearDamping = IsGrounded ? entityData.groundDrag : entityData.airDrag;
+        rb.linearDamping = IsGrounded ? entityData.GroundDrag : entityData.AirDrag;
     }
 
     private void ApplyGravity()
     {
         if (!IsGrounded)
         {
-            rb.AddForce(Physics.gravity * entityData.gravityMultiplier, ForceMode.Acceleration);
+            rb.AddForce(Physics.gravity * entityData.GravityMultiplier, ForceMode.Acceleration);
         }
     }
 
@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded && jumpOffCd && InputReader.Instance.Jump > 0)
         {
             rb.AddForce(
-                entityData.jumpForce * InputReader.Instance.Jump * Vector3.up,
+                entityData.JumpForce * InputReader.Instance.Jump * Vector3.up,
                 ForceMode.VelocityChange
             );
             jumpOffCd = false;
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
     {
         if (IsSprinting())
         {
-            playerStamina.UseStamina(entityData.sprintStaminaUsagePerSec * Time.deltaTime);
+            playerStamina.UseStamina(entityData.SprintStaminaUsagePerSec * Time.deltaTime);
         }
     }
 

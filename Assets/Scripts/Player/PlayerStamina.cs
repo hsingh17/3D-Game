@@ -34,8 +34,8 @@ public class PlayerStamina : MonoBehaviour
 
     private void Awake()
     {
-        CurrentStamina = scriptableObject.maxStamina;
-        MaxStamina = scriptableObject.maxStamina;
+        CurrentStamina = scriptableObject.MaxStamina;
+        MaxStamina = scriptableObject.MaxStamina;
         timeSinceLastStaminaConsumingAction = 0;
         blockStaminaUsage = false;
     }
@@ -59,7 +59,7 @@ public class PlayerStamina : MonoBehaviour
         )
         {
             CurrentStamina = Mathf.Clamp(
-                CurrentStamina + scriptableObject.staminaRegenPerSec * Time.deltaTime,
+                CurrentStamina + scriptableObject.StaminaRegenPerSec * Time.deltaTime,
                 0,
                 MaxStamina
             );

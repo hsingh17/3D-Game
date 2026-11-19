@@ -4,8 +4,7 @@ using UnityEngine;
 public class Hand : MonoBehaviour
 {
     public static Action<float> OnThrowStartEvent;
-    public static Action<Item> OnThrowReleaseEvent;
-    public static Action<Item, bool> OnGrabItem;
+    public static Action<ItemInstance> OnThrowReleaseEvent;
 
     [SerializeField]
     private LayerMask layersToCheck;
@@ -24,7 +23,7 @@ public class Hand : MonoBehaviour
 
     private bool detectedInteractable;
     private RaycastHit interactableRayCastInfo;
-    private Item itemInHand;
+    private InteractableItem itemInHand;
     private Camera camera;
     private Inventory inventory;
 
@@ -85,7 +84,7 @@ public class Hand : MonoBehaviour
             && interactable.IsInteractable
         )
         {
-            if (interactable is Item item)
+            if (interactable is InteractableItem item)
             {
                 GrabItem(item);
             }
@@ -96,16 +95,23 @@ public class Hand : MonoBehaviour
         }
     }
 
-    private void GrabItem(Item item)
+    private void GrabItem(InteractableItem item)
     {
-        bool pickedUpItem = false;
-        if (!itemInHand)
+        int idx = inventory.AddItem(item);
+        // Item was put into inventory succesfully.
+        if (idx != -1)
         {
-            item.Interact(gameObject);
-            itemInHand = item;
-            pickedUpItem = true;
+            if (!itemInHand)
+            {
+                item.Interact(gameObject);
+                itemInHand = item;
+            }
+            else
+            {
+                // Item went into inventory so remove it from scene.
+                Destroy(item.gameObject);
+            }
         }
-        OnGrabItem?.Invoke(item, pickedUpItem);
     }
 
     private void StartThrow()
@@ -126,14 +132,15 @@ public class Hand : MonoBehaviour
                 * Math.Clamp(duration, 0, maxThrowChargeDuration)
             );
             itemInHand.Throw(camera.transform.forward * force);
-            OnThrowReleaseEvent?.Invoke(itemInHand);
+            inventory.RemoveItem(itemInHand);
+            OnThrowReleaseEvent?.Invoke(itemInHand.ItemInstance);
             itemInHand = null;
         }
     }
 
     private void SwapItemInHand(int idx)
     {
-        Item item = inventory.GetItem(idx);
+        InteractableItem item = inventory.GetItem(idx);
         // Destroy old item in hand
         if (itemInHand)
         {

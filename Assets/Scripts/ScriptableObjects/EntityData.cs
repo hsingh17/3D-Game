@@ -3,13 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Entity", menuName = "Scriptable Objects/Entity")]
 public class EntityData : ScriptableObject
 {
-    public float jumpForce;
-    public float moveSpeed;
-    public float groundDrag;
-    public float airDrag;
-    public float gravityMultiplier = 1;
-    public float sprintMultiplier = 1;
-    public float sprintStaminaUsagePerSec = 20;
-    public float maxStamina = 100;
-    public float staminaRegenPerSec = 20;
+    public float JumpForce;
+    public float MoveSpeed;
+    public float GroundDrag;
+    public float AirDrag;
+    public float GravityMultiplier = 1;
+    public float SprintMultiplier = 1;
+    public float SprintStaminaUsagePerSec = 20;
+    public float MaxStamina = 100;
+    public float StaminaRegenPerSec = 20;
 }

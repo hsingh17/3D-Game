@@ -24,16 +24,22 @@ public class ItemSpawner : MonoBehaviour
         }
     }
 
-    public Item SpawnItem(ItemData itemData, Transform spawnPoint = null)
+    public InteractableItem SpawnItem(ItemInstance itemInstance, Transform spawnPoint = null)
+    {
+        InteractableItem item = SpawnItem(itemInstance.ItemData, spawnPoint);
+        item.ItemInstance = itemInstance;
+        return item;
+    }
+
+    public InteractableItem SpawnItem(ItemData itemData, Transform spawnPoint = null)
     {
         GameObject spawnedItem = Instantiate(
-            itemData.itemPrefab,
+            itemData.ItemPrefab,
             spawnPoint != null ? spawnPoint : transform
         );
 
-        spawnedItem.transform.SetParent(itemsParentGameObject.transform);
-        spawnedItem.TryGetComponent(out Item item);
-        item.itemsParentGameObject = itemsParentGameObject;
+        spawnedItem.TryGetComponent(out InteractableItem item);
+        item.PostInstantiate(itemData, itemsParentGameObject);
 
         return item;
     }

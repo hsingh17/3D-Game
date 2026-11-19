@@ -1,13 +1,10 @@
-using System;
 using UnityEngine;
 
-public class Item : MonoBehaviour, IInteractable
+public class InteractableItem : MonoBehaviour, IInteractable
 {
-    public GameObject itemsParentGameObject;
-
-    public ItemData itemData;
-    private readonly Guid itemId = Guid.NewGuid();
-
+    // The only reason we have this is so inventory can keep a reference to the item
+    // safely since Destroy is called on InteractableItem
+    public ItemInstance ItemInstance;
     private Rigidbody rb;
 
     public bool IsInteractable { get; set; }
@@ -52,20 +49,12 @@ public class Item : MonoBehaviour, IInteractable
         rb.AddForce(force, ForceMode.Impulse);
 
         // Move object back to the "items" game object
-        gameObject.transform.SetParent(itemsParentGameObject.transform);
+        gameObject.transform.SetParent(ItemInstance.ItemsParentGameObject.transform);
     }
 
-    public override bool Equals(object obj)
+    public void PostInstantiate(ItemData itemData, GameObject parentGameObj)
     {
-        return obj != null
-            && obj.GetType() == GetType()
-            && obj is Item item
-            && item.name == name
-            && item.itemId == itemId;
-    }
-
-    public override int GetHashCode()
-    {
-        return itemId.GetHashCode();
+        ItemInstance = new(itemData, parentGameObj);
+        parentGameObj.transform.SetParent(parentGameObj.transform);
     }
 }
