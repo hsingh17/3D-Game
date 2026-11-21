@@ -10,6 +10,7 @@ public class InputReader : MonoBehaviour
     public static Action OnThrowStartEvent;
     public static Action<double> OnThrowReleaseEvent;
     public static Action<int> OnItemSlotSelect;
+    public static Action<float> OnItemSlotScroll;
 
     private InputAction moveAction;
     private InputAction jumpAction;
@@ -18,12 +19,14 @@ public class InputReader : MonoBehaviour
     private InputAction interactAction;
     private InputAction throwAction;
     private InputAction selectItemSlotAction;
+    private InputAction scrollItemSlotAction;
     public Vector3 Move { get; private set; }
     public Vector2 Look { get; private set; }
     public float Sprint { get; private set; }
     public float Jump { get; private set; }
     public float Interact { get; private set; }
     public int SelectItemSlot { get; private set; }
+    public int ScrollItemSlot { get; private set; }
 
     private void Awake()
     {
@@ -36,6 +39,7 @@ public class InputReader : MonoBehaviour
         interactAction = playerInput.actions["Interact"];
         throwAction = playerInput.actions["Throw"];
         selectItemSlotAction = playerInput.actions["SelectItemSlot"];
+        scrollItemSlotAction = playerInput.actions["ScrollSlot"];
     }
 
     private void OnEnable()
@@ -43,6 +47,7 @@ public class InputReader : MonoBehaviour
         throwAction.performed += StartThrow;
         throwAction.canceled += EndThrow;
         selectItemSlotAction.performed += OnPerformSelectItemSlot;
+        scrollItemSlotAction.performed += OnScrollItemSlot;
     }
 
     private void OnDisable()
@@ -50,6 +55,7 @@ public class InputReader : MonoBehaviour
         throwAction.performed -= StartThrow;
         throwAction.canceled -= EndThrow;
         selectItemSlotAction.performed -= OnPerformSelectItemSlot;
+        scrollItemSlotAction.performed -= OnScrollItemSlot;
     }
 
     private void Update()
@@ -66,6 +72,15 @@ public class InputReader : MonoBehaviour
 
     private void EndThrow(InputAction.CallbackContext ctx) =>
         OnThrowReleaseEvent?.Invoke(ctx.duration);
+
+    private void OnScrollItemSlot(InputAction.CallbackContext ctx)
+    {
+        float val = ctx.ReadValue<float>();
+        if (val != 0)
+        {
+            OnItemSlotScroll?.Invoke(val * -1);
+        }
+    }
 
     private void OnPerformSelectItemSlot(InputAction.CallbackContext ctx)
     {

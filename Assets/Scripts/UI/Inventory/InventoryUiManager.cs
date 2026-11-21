@@ -18,8 +18,7 @@ public class InventoryUiManager : MonoBehaviour
     private static readonly string inventoryHotbarSlotSpriteClassName =
         "inventory-hotbar-slot-sprite";
 
-    [SerializeField]
-    private int maxHotbarSlots = 10;
+    private int maxHotbarSlots;
     private int maxItems;
     private int curSelectedHotbarSlot = 0;
     private List<VisualElement> hotbarSlots;
@@ -27,7 +26,7 @@ public class InventoryUiManager : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<PanelRenderer>().RegisterUIReloadCallback(OnUIReload);
-        Inventory.OnStart += SetMaxItems;
+        Inventory.OnStart += SetInventorySize;
         Inventory.OnAddItem += AddItemSpriteToHotbar;
         Inventory.OnRemoveItem += RemoveItemSpriteToHotbar;
         Inventory.OnGetItem += HighlightInventorySlot;
@@ -36,7 +35,7 @@ public class InventoryUiManager : MonoBehaviour
     private void OnDisable()
     {
         GetComponent<PanelRenderer>().UnregisterUIReloadCallback(OnUIReload);
-        Inventory.OnStart -= SetMaxItems;
+        Inventory.OnStart -= SetInventorySize;
         Inventory.OnAddItem -= AddItemSpriteToHotbar;
         Inventory.OnRemoveItem -= RemoveItemSpriteToHotbar;
         Inventory.OnGetItem -= HighlightInventorySlot;
@@ -70,9 +69,10 @@ public class InventoryUiManager : MonoBehaviour
         }
     }
 
-    private void SetMaxItems(int maxItems)
+    private void SetInventorySize(int maxItems, int maxHotbarSlots)
     {
         this.maxItems = maxItems;
+        this.maxHotbarSlots = maxHotbarSlots;
     }
 
     private void AddItemSpriteToHotbar(ItemInstance item, int idx)

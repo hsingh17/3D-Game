@@ -75,6 +75,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "ScrollSlot",
+                    "type": "PassThrough",
+                    "id": "3f604c08-7701-48c6-a060-8ae01d19da67",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -295,6 +305,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "SelectItemSlot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d66b94bc-2c34-47ee-b82e-3c96c1598382",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollSlot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -39,14 +39,16 @@ public class Hand : MonoBehaviour
     {
         InputReader.OnThrowStartEvent += StartThrow;
         InputReader.OnThrowReleaseEvent += Throw;
-        InputReader.OnItemSlotSelect += SwapItemInHand;
+        InputReader.OnItemSlotSelect += SwapItemInHandByIdx;
+        InputReader.OnItemSlotScroll += SwapItemInHandByDelta;
     }
 
     private void OnDisable()
     {
         InputReader.OnThrowStartEvent -= StartThrow;
         InputReader.OnThrowReleaseEvent -= Throw;
-        InputReader.OnItemSlotSelect -= SwapItemInHand;
+        InputReader.OnItemSlotSelect -= SwapItemInHandByIdx;
+        InputReader.OnItemSlotScroll -= SwapItemInHandByDelta;
     }
 
     private void FixedUpdate()
@@ -99,18 +101,19 @@ public class Hand : MonoBehaviour
     {
         int idx = inventory.AddItem(item);
         // Item was put into inventory succesfully.
-        if (idx != -1)
+        if (idx == -1)
         {
-            if (!itemInHand)
-            {
-                item.Interact(gameObject);
-                itemInHand = item;
-            }
-            else
-            {
-                // Item went into inventory so remove it from scene.
-                Destroy(item.gameObject);
-            }
+            return;
+        }
+        else if (!itemInHand)
+        {
+            item.Interact(gameObject);
+            itemInHand = item;
+        }
+        else
+        {
+            // Item went into inventory so remove it from scene.
+            Destroy(item.gameObject);
         }
     }
 
@@ -138,9 +141,18 @@ public class Hand : MonoBehaviour
         }
     }
 
-    private void SwapItemInHand(int idx)
+    private void SwapItemInHandByDelta(float delta)
     {
-        InteractableItem item = inventory.GetItem(idx);
+        SwapItemInHand(inventory.GetItemByDelta(delta));
+    }
+
+    private void SwapItemInHandByIdx(int idx)
+    {
+        SwapItemInHand(inventory.GetItem(idx));
+    }
+
+    private void SwapItemInHand(InteractableItem item)
+    {
         // Destroy old item in hand
         if (itemInHand)
         {

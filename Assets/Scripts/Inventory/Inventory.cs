@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public static Action<int> OnStart;
+    public static Action<int, int> OnStart;
     public static Action<ItemInstance, int> OnAddItem;
     public static Action<int> OnRemoveItem;
     public static Action<InteractableItem, int> OnGetItem;
@@ -13,12 +13,15 @@ public class Inventory : MonoBehaviour
     private ItemSpawner itemSpawner;
 
     [SerializeField]
+    private int maxHotbarSlots;
+
+    [SerializeField]
     private int maxItems;
 
     [SerializeField]
     private List<ItemInstance> items;
 
-    private int lastSelectedSlot = -1;
+    private int lastSelectedSlot = 0;
 
     private void Awake()
     {
@@ -32,19 +35,23 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        OnStart?.Invoke(maxItems);
+        OnStart?.Invoke(maxItems, maxHotbarSlots);
     }
 
     public int AddItem(InteractableItem item)
     {
-        int freeSlotIdx = lastSelectedSlot == -1 ? GetFirstFreeSlot() : lastSelectedSlot;
+        int freeSlotIdx = GetFirstFreeSlot();
         if (freeSlotIdx != -1)
         {
             items[freeSlotIdx] = item.ItemInstance;
             OnAddItem?.Invoke(items[freeSlotIdx], freeSlotIdx);
-            lastSelectedSlot = -1;
         }
         return freeSlotIdx;
+    }
+
+    public InteractableItem GetItemByDelta(float delta)
+    {
+        return GetItem(Mod(lastSelectedSlot + (int)delta, maxHotbarSlots));
     }
 
     public InteractableItem GetItem(int idx)
@@ -54,12 +61,12 @@ public class Inventory : MonoBehaviour
             return null;
         }
 
-        InteractableItem item = items[idx] != null ? itemSpawner.SpawnItem(items[idx]) : null;
+        InteractableItem item =
+            items[idx] != null && items[idx].ItemData != null
+                ? itemSpawner.SpawnItem(items[idx])
+                : null;
 
-        // No item was retrieved when grabbing from this index.
-        // Save the last selected slot for when player grabs item to put it into that slot
-        lastSelectedSlot = item == null ? idx : -1;
-
+        lastSelectedSlot = idx;
         OnGetItem?.Invoke(item, idx);
         return item;
     }
@@ -76,6 +83,11 @@ public class Inventory : MonoBehaviour
 
     private int GetFirstFreeSlot()
     {
+        if (items[lastSelectedSlot] == null || items[lastSelectedSlot].ItemData == null)
+        {
+            return lastSelectedSlot;
+        }
+
         int i;
         for (i = 0; i < items.Capacity; i++)
         {
@@ -87,5 +99,11 @@ public class Inventory : MonoBehaviour
         }
 
         return i >= items.Capacity ? -1 : i;
+    }
+
+    private int Mod(int x, int m)
+    {
+        int r = x % m;
+        return r < 0 ? r + m : r;
     }
 }

@@ -862,7 +862,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   itemSpawner: {fileID: 1475610728}
-  maxItems: 10
+  maxHotbarSlots: 10
+  maxItems: 20
   items: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
