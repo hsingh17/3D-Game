@@ -27,6 +27,13 @@ public class InputReader : MonoBehaviour
     public float Interact { get; private set; }
     public int SelectItemSlot { get; private set; }
     public int ScrollItemSlot { get; private set; }
+    public string InteractBinding
+    {
+        get =>
+            interactAction?.GetBindingDisplayString(
+                InputBinding.DisplayStringOptions.DontIncludeInteractions
+            );
+    }
 
     private void Awake()
     {

@@ -5,6 +5,7 @@ public class Hand : MonoBehaviour
 {
     public static Action<float> OnThrowStartEvent;
     public static Action<ItemInstance> OnThrowReleaseEvent;
+    public static Action<IInteractable, Vector3> OnDetectInteractable;
 
     [SerializeField]
     private LayerMask layersToCheck;
@@ -21,7 +22,7 @@ public class Hand : MonoBehaviour
     [Range(1f, 10f)]
     private float maxThrowChargeDuration;
 
-    private bool detectedInteractable;
+    private IInteractable detectedInteractable;
     private RaycastHit interactableRayCastInfo;
     private InteractableItem itemInHand;
     private Camera camera;
@@ -59,40 +60,43 @@ public class Hand : MonoBehaviour
 
     private void CheckForInteractable()
     {
-        detectedInteractable = Physics.Raycast(
+        bool hit = Physics.Raycast(
             camera.transform.position,
             camera.transform.forward,
             out interactableRayCastInfo,
             maxInteractDistance,
             layersToCheck
         );
+        Vector3 detectPos = hit ? interactableRayCastInfo.point : Vector3.zero;
+
+        if (!hit)
+        {
+            detectedInteractable = null;
+        }
+        else
+        {
+            GameObject interactedGameObj = interactableRayCastInfo.collider.gameObject;
+            interactedGameObj.TryGetComponent(out detectedInteractable);
+        }
+
+        OnDetectInteractable?.Invoke(detectedInteractable, detectPos);
     }
 
     private void Interact()
     {
-        if (!detectedInteractable || InputReader.Instance.Interact <= 0)
-        {
-            return;
-        }
-
-        GameObject interactedGameObj = interactableRayCastInfo.collider.gameObject;
-        if (interactedGameObj == null)
-        {
-            return;
-        }
-
         if (
-            interactedGameObj.TryGetComponent(out IInteractable interactable)
-            && interactable.IsInteractable
+            detectedInteractable != null
+            && InputReader.Instance.Interact > 0
+            && detectedInteractable.IsInteractable
         )
         {
-            if (interactable is InteractableItem item)
+            if (detectedInteractable is InteractableItem item)
             {
                 GrabItem(item);
             }
             else
             {
-                interactable.Interact(gameObject);
+                detectedInteractable.Interact(gameObject);
             }
         }
     }

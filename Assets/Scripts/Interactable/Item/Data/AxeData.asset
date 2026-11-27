@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: AxeData
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   ItemName: Axe
-  ItemPrefab: {fileID: 0}
-  ItemSprite: {fileID: 0}
+  ItemPrefab: {fileID: 5858251155423183106, guid: f6faf685b7c3a184c843f3b182009a3d, type: 3}
+  ItemSprite: {fileID: 21300000, guid: 72f7ff6ef7264d2479e29bf0679b9915, type: 3}
+  InHandLocalPosition: {x: 0.05, y: 0.29, z: 0}
+  InHandLocalRotation: {x: -0.00000010672171, y: 76.99999, z: 3.2300022}

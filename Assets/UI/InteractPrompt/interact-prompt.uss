@@ -1,0 +1,5 @@
+.interact-prompt-text {
+    position: absolute;
+    font-size: 36px;
+    color: #FFFFFF;
+}

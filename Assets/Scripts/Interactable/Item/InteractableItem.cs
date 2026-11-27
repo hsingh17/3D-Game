@@ -28,7 +28,10 @@ public class InteractableItem : MonoBehaviour, IInteractable
 
         // Move object to target position
         gameObject.transform.SetParent(interactor.transform);
-        transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.Euler(Vector3.zero));
+        transform.SetLocalPositionAndRotation(
+            ItemInstance.ItemData.InHandLocalPosition,
+            Quaternion.Euler(ItemInstance.ItemData.InHandLocalRotation)
+        );
     }
 
     public virtual void Use()
